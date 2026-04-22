@@ -1,9 +1,6 @@
 package com.example.UniversityManagementSystem.Controller;
 
-import com.example.UniversityManagementSystem.dto.RegisterStudentDTO;
-import com.example.UniversityManagementSystem.dto.ResponseDTO;
-import com.example.UniversityManagementSystem.dto.StudentIdDTO;
-import com.example.UniversityManagementSystem.dto.UpdateStudentDTO;
+import com.example.UniversityManagementSystem.dto.*;
 import com.example.UniversityManagementSystem.entity.Student;
 import com.example.UniversityManagementSystem.service.StudentService;
 import jakarta.validation.Valid;
@@ -57,7 +54,13 @@ public class StudentController {
         studentService.updateStudent(request);
 
         return  ResponseEntity.ok(new ResponseDTO("Student updated Successfully"));
+    }
 
+
+    // Custom search endpoint to search for a student by name or email
+    @GetMapping("/search")
+    public Student searchStudent(@Valid @RequestBody NameEmailStudentDTO request) {
+        return studentService.searchStudent(request);
     }
 
 
