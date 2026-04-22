@@ -1,5 +1,6 @@
 package com.example.UniversityManagementSystem.Controller;
 
+import com.example.UniversityManagementSystem.dto.CourseIdDTO;
 import com.example.UniversityManagementSystem.dto.RegisterCourseDTO;
 import com.example.UniversityManagementSystem.dto.RegisterStudentDTO;
 import com.example.UniversityManagementSystem.dto.ResponseDTO;
@@ -41,6 +42,10 @@ public class CourseController {
     }
 
     // Read a course by ID
+    @GetMapping("/getCourseById")
+    public Course getCourseById(@Valid @RequestBody CourseIdDTO request) {
+        return courseService.getCourseById(request);
+    }
 
     // De-activating a course
 
