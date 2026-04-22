@@ -3,11 +3,14 @@ package com.example.UniversityManagementSystem.Controller;
 import com.example.UniversityManagementSystem.dto.RegisterStudentDTO;
 import com.example.UniversityManagementSystem.dto.ResponseDTO;
 import com.example.UniversityManagementSystem.dto.StudentIdDTO;
+import com.example.UniversityManagementSystem.entity.Student;
 import com.example.UniversityManagementSystem.service.StudentService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController // Marks that this class handles http requests and automatically make the return object json
 @RequestMapping("students")
@@ -22,8 +25,13 @@ public class StudentController {
     }
 
     @GetMapping
-    public String getAllStudents() {
-        return "List of all students";
+    public List<Student> getAllStudents() {
+        return studentService.getAllStudents();
+    }
+
+    @GetMapping("/getStudent")
+    public Student getStudent(@Valid @RequestBody StudentIdDTO request) {
+        return studentService.getStudent(request);
     }
 
     @PostMapping()
@@ -39,5 +47,6 @@ public class StudentController {
 
         return ResponseEntity.ok(new ResponseDTO("Student deactivated Successfully"));
     }
+
 
 }
