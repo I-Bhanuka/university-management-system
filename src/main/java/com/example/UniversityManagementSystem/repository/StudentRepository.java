@@ -27,4 +27,10 @@ public interface StudentRepository extends JpaRepository<Student, UUID> {
      * WHERE studentid = ?;
      */
     Optional<Student> findByStudentId(String studentId);
+
+    Optional<Student> findTopByFirstName(String firstName);
+
+    Optional<Student> findByEmail(String email);
+
+    Optional<Student> findByFirstNameAndEmail(String studentId, String email);
 }
