@@ -55,6 +55,14 @@ public class StudentService {
                 .studentStatus(StudentStatus.ACTIVE)
                 .build();
 
+        // Logs
+        log.info("Registering student with ID: {}", student.getStudentId());
+        log.info("First Name: {}", student.getFirstName());
+        log.info("Last Name: {}", student.getLastName());
+        log.info("Date of Birth: {}", student.getDob());
+        log.info("Email: {}", student.getEmail());
+        log.info("Enrollment Date: {}", student.getEnrollmentDate());
+
         // Save the Student entity to the database
         studentRepository.save(student);
     }
