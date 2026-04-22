@@ -3,6 +3,7 @@ package com.example.UniversityManagementSystem.Controller;
 import com.example.UniversityManagementSystem.dto.RegisterStudentDTO;
 import com.example.UniversityManagementSystem.dto.ResponseDTO;
 import com.example.UniversityManagementSystem.dto.StudentIdDTO;
+import com.example.UniversityManagementSystem.dto.UpdateStudentDTO;
 import com.example.UniversityManagementSystem.entity.Student;
 import com.example.UniversityManagementSystem.service.StudentService;
 import jakarta.validation.Valid;
@@ -46,6 +47,17 @@ public class StudentController {
         studentService.deactivateStudent(request);
 
         return ResponseEntity.ok(new ResponseDTO("Student deactivated Successfully"));
+    }
+
+    @PatchMapping("/update")
+    public ResponseEntity<ResponseDTO> updateStudent(@Valid @RequestBody UpdateStudentDTO request) {
+
+        log.info(request.getStudentId());
+
+        studentService.updateStudent(request);
+
+        return  ResponseEntity.ok(new ResponseDTO("Student updated Successfully"));
+
     }
 
 
