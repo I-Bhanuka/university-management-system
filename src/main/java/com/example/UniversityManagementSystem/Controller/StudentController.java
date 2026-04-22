@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController // Marks that this class handles http requests and automatically make the return object json
-@RequestMapping("students")
+@RequestMapping("/api/students")
 @Slf4j
 public class StudentController {
 
