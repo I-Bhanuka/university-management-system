@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -22,13 +23,13 @@ public class Student {
     @UuidGenerator
     private UUID id;
 
-    @Column(length = 8, nullable = false, unique = true)
+    @Column(name = "studentid", length = 11, nullable = false, unique = true)
     private String studentId;
 
-    @Column(length = 10, nullable = false)
+    @Column(name = "firstname", length = 10, nullable = false)
     private String firstName;
 
-    @Column(length = 10, nullable = false)
+    @Column(name = "lastname", length = 10, nullable = false)
     private String lastName;
 
     private LocalDate dob;
@@ -36,14 +37,18 @@ public class Student {
     @Column(length = 50, nullable = false, unique = true)
     private String email;
 
+    @Column(name = "enrollmentdate")
     private LocalDate enrollmentDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 8, nullable = false)
+    @Column(name = "studentstatus", length = 8, nullable = false)
     private StudentStatus studentStatus = StudentStatus.ACTIVE;
 
     @ManyToOne
-    @JoinColumn(name = "courseEnrolled")
+    @JoinColumn(name = "courseenrolled")
     private Course course;
+
+    @Column(name = "created_at", updatable = false, insertable = false)
+    private LocalDateTime createdAt;
 
 }
