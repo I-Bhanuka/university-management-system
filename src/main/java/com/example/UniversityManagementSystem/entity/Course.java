@@ -21,10 +21,10 @@ public class Course {
     @UuidGenerator
     private UUID id;
 
-    @Column(length = 8, nullable = false, unique = true)
+    @Column(name = "courseid", length = 8, nullable = false, unique = true)
     private String courseId;
 
-    @Column(length = 50, nullable = false)
+    @Column(name = "coursename", length = 50, nullable = false)
     private String courseName;
 
     @Column(name = "duration_days")
@@ -34,6 +34,6 @@ public class Course {
     private String badge;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 10, nullable = false)
+    @Column(name = "coursestatus", length = 10, nullable = false)
     private CourseStatus courseStatus = CourseStatus.SCHEDULED;
 }
