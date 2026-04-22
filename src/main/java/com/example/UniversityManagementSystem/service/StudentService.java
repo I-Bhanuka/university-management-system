@@ -1,5 +1,7 @@
 package com.example.UniversityManagementSystem.service;
 
+import ch.qos.logback.classic.boolex.StubEventEvaluator;
+import com.example.UniversityManagementSystem.dto.NameEmailStudentDTO;
 import com.example.UniversityManagementSystem.dto.RegisterStudentDTO;
 import com.example.UniversityManagementSystem.dto.StudentIdDTO;
 import com.example.UniversityManagementSystem.dto.UpdateStudentDTO;
@@ -91,6 +93,25 @@ public class StudentService {
 
         // Save the changes to the database
         studentRepository.save(std);
+    }
+
+    public Student searchStudent(NameEmailStudentDTO request) {
+        Student std = null;
+
+        if (request.getFirstName() != null && request.getEmail() != null){
+            std = studentRepository.findByFirstNameAndEmail(request.getFirstName(), request.getEmail()).orElse(null);
+        } else if (request.getEmail() != null) {
+            std = studentRepository.findByEmail(request.getEmail()).orElse(null);
+        } else if (request.getFirstName() != null)  {
+            std = studentRepository.findTopByFirstName(request.getFirstName()).orElse(null);
+        }
+
+        if (std == null) {
+            log.info("Student with name {} or email {} not found", request.getFirstName(), request.getEmail());
+            throw new RuntimeException("Student not found");
+        } else  {
+            return std;
+        }
     }
 
 
