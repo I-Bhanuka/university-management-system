@@ -2,6 +2,7 @@ package com.example.UniversityManagementSystem.service;
 
 import com.example.UniversityManagementSystem.dto.RegisterStudentDTO;
 import com.example.UniversityManagementSystem.dto.StudentIdDTO;
+import com.example.UniversityManagementSystem.dto.UpdateStudentDTO;
 import com.example.UniversityManagementSystem.entity.Student;
 import com.example.UniversityManagementSystem.enums.StudentStatus;
 import com.example.UniversityManagementSystem.repository.StudentRepository;
@@ -64,6 +65,31 @@ public class StudentService {
         std.setStudentStatus(StudentStatus.INACTIVE);
 
         // Save the updated Student entity to the database
+        studentRepository.save(std);
+    }
+
+    public void updateStudent(UpdateStudentDTO request) {
+        // Find the Student
+        Student std = findStudentByStudentId(request.getStudentId());
+
+        // Update the student information
+        if (request.getFirstName() != null) {
+            std.setFirstName(request.getFirstName());
+        }
+
+        if (request.getLastName() != null) {
+            std.setLastName(request.getLastName());
+        }
+
+        if (request.getDob() != null) {
+            std.setDob(request.getDob());
+        }
+
+        if (request.getEmail() != null) {
+            std.setEmail(request.getEmail());
+        }
+
+        // Save the changes to the database
         studentRepository.save(std);
     }
 
