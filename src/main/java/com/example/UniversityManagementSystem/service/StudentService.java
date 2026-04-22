@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -18,6 +19,15 @@ public class StudentService {
 
     public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
+    }
+
+    public Student getStudent(StudentIdDTO request) {
+        // Find the Student
+        return findStudentByStudentId(request.getStudentId());
+    }
+
+    public List<Student> getAllStudents() {
+        return studentRepository.findAll();
     }
 
     public void registerStudent(RegisterStudentDTO request) {
@@ -48,22 +58,13 @@ public class StudentService {
 
     public void deactivateStudent(StudentIdDTO request) {
         // Find the Student
-
-        Student std = studentRepository.findByStudentId(request.getStudentId()).orElse(null);
-
-        // If student is not found, log the error and throw an exception
-        if (std == null){
-            log.info("Student with studentId {} not found", request.getStudentId());
-            throw new RuntimeException("Student not found");
-        }
+        Student std = findStudentByStudentId(request.getStudentId());
 
         // Update the student status to INACTIVE
         std.setStudentStatus(StudentStatus.INACTIVE);
 
         // Save the updated Student entity to the database
         studentRepository.save(std);
-
-
     }
 
 
@@ -103,6 +104,20 @@ public class StudentService {
         // Construct the new studentId
         studentId = String.format("%s-%d%04d", prefix, yearId, numberId); // "ST-20260001";
         return studentId;
+    }
+
+    // Helper method to find the student by studentId
+    public Student findStudentByStudentId(String studentId) {
+        // Find the Student
+        Student std = studentRepository.findByStudentId(studentId).orElse(null);
+
+        // If student is not found, log the error and throw an exception
+        if (std == null){
+            log.info("Student with studentId {} not found", studentId);
+            throw new RuntimeException("Student not found");
+        }
+
+        return std;
     }
 
 }
