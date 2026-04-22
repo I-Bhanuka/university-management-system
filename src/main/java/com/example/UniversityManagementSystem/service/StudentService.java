@@ -1,6 +1,7 @@
 package com.example.UniversityManagementSystem.service;
 
 import com.example.UniversityManagementSystem.dto.RegisterStudentDTO;
+import com.example.UniversityManagementSystem.dto.StudentIdDTO;
 import com.example.UniversityManagementSystem.entity.Student;
 import com.example.UniversityManagementSystem.enums.StudentStatus;
 import com.example.UniversityManagementSystem.repository.StudentRepository;
@@ -43,6 +44,26 @@ public class StudentService {
 
         // Save the Student entity to the database
         studentRepository.save(student);
+    }
+
+    public void deactivateStudent(StudentIdDTO request) {
+        // Find the Student
+
+        Student std = studentRepository.findByStudentId(request.getStudentId()).orElse(null);
+
+        // If student is not found, log the error and throw an exception
+        if (std == null){
+            log.info("Student with studentId {} not found", request.getStudentId());
+            throw new RuntimeException("Student not found");
+        }
+
+        // Update the student status to INACTIVE
+        std.setStudentStatus(StudentStatus.INACTIVE);
+
+        // Save the updated Student entity to the database
+        studentRepository.save(std);
+
+
     }
 
 
