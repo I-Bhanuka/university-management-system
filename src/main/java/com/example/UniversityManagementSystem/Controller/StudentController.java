@@ -2,6 +2,7 @@ package com.example.UniversityManagementSystem.Controller;
 
 import com.example.UniversityManagementSystem.dto.RegisterStudentDTO;
 import com.example.UniversityManagementSystem.dto.ResponseDTO;
+import com.example.UniversityManagementSystem.dto.StudentIdDTO;
 import com.example.UniversityManagementSystem.service.StudentService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,13 @@ public class StudentController {
         studentService.registerStudent(request);
 
         return ResponseEntity.ok(new ResponseDTO("Student created Successfully"));
+    }
+
+    @GetMapping("/deactivate")
+    public ResponseEntity<ResponseDTO> deactivateStudent(@Valid @RequestBody StudentIdDTO request) {
+        studentService.deactivateStudent(request);
+
+        return ResponseEntity.ok(new ResponseDTO("Student deactivated Successfully"));
     }
 
 }
