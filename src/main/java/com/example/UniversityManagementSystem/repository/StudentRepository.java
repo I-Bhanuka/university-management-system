@@ -19,4 +19,12 @@ public interface StudentRepository extends JpaRepository<Student, UUID> {
      * LIMIT 1;
      */
     Optional<Student> findTopByOrderByCreatedAtDesc();
+
+    /**
+     * Query,
+     * SELECT *
+     * FROM student
+     * WHERE studentid = ?;
+     */
+    Optional<Student> findByStudentId(String studentId);
 }
