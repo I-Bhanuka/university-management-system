@@ -3,6 +3,7 @@ package com.example.UniversityManagementSystem.Controller;
 import com.example.UniversityManagementSystem.dto.CourseIdDTO;
 import com.example.UniversityManagementSystem.dto.RegisterCourseDTO;
 import com.example.UniversityManagementSystem.dto.ResponseDTO;
+import com.example.UniversityManagementSystem.dto.UpdateCourseDTO;
 import com.example.UniversityManagementSystem.entity.Course;
 import com.example.UniversityManagementSystem.service.CourseService;
 import jakarta.validation.Valid;
@@ -54,6 +55,12 @@ public class CourseController {
     }
 
     // Update course details
+    @PatchMapping("/update")
+    public ResponseEntity<ResponseDTO> updateCourseDetails(@Valid @RequestBody UpdateCourseDTO request) {
+        courseService.updateCourseDetails(request);
+
+        return ResponseEntity.ok(new ResponseDTO("Course updated successfully"));
+    }
 
     // Enroll students in a course
 
