@@ -1,9 +1,6 @@
 package com.example.UniversityManagementSystem.Controller;
 
-import com.example.UniversityManagementSystem.dto.CourseIdDTO;
-import com.example.UniversityManagementSystem.dto.RegisterCourseDTO;
-import com.example.UniversityManagementSystem.dto.ResponseDTO;
-import com.example.UniversityManagementSystem.dto.UpdateCourseDTO;
+import com.example.UniversityManagementSystem.dto.*;
 import com.example.UniversityManagementSystem.entity.Course;
 import com.example.UniversityManagementSystem.service.CourseService;
 import jakarta.validation.Valid;
@@ -63,6 +60,12 @@ public class CourseController {
     }
 
     // Enroll students in a course
+    @PostMapping("/enroll")
+    public ResponseEntity<ResponseDTO> enrollStudentIntoCourse(@Valid @RequestBody CourseEnrollDTO request) {
+        courseService.enrollStudentIntoCourse(request);
+
+        return ResponseEntity.ok(new ResponseDTO("Student enrolled in course successfully"));
+    }
 
     // Assign lecturers to a course
 
