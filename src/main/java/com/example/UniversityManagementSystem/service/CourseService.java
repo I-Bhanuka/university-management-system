@@ -1,5 +1,6 @@
 package com.example.UniversityManagementSystem.service;
 
+import com.example.UniversityManagementSystem.dto.CourseEnrollDTO;
 import com.example.UniversityManagementSystem.dto.CourseIdDTO;
 import com.example.UniversityManagementSystem.dto.RegisterCourseDTO;
 import com.example.UniversityManagementSystem.dto.UpdateCourseDTO;
@@ -7,6 +8,7 @@ import com.example.UniversityManagementSystem.entity.Course;
 import com.example.UniversityManagementSystem.entity.Student;
 import com.example.UniversityManagementSystem.enums.CourseStatus;
 import com.example.UniversityManagementSystem.repository.CourseRepository;
+import com.example.UniversityManagementSystem.repository.StudentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +19,14 @@ import java.util.List;
 public class CourseService {
 
     private final CourseRepository courseRepository;
+    private final StudentService studentService;
+    private final StudentRepository studentRepository;
 
-    public CourseService(CourseRepository courseRepository) {
+    public CourseService(CourseRepository courseRepository, StudentService studentService, StudentRepository studentRepository) {
+
         this.courseRepository = courseRepository;
+        this.studentService = studentService;
+        this.studentRepository = studentRepository;
     }
 
     // Create course method
@@ -110,6 +117,24 @@ public class CourseService {
 
         // Save the course in the database
         courseRepository.save(crs);
+    }
+
+    // Enroll students in a course method
+    public void enrollStudentIntoCourse(CourseEnrollDTO request) {
+        // Validate the courseId
+        Course crs = getCourseByCourseId(request.getCourseId());
+
+        // Validate the studentId
+        Student std = studentService.findStudentByStudentId(request.getStudentId());
+
+        // Then add the courseId to the student entity and save the student entity to the database
+        std.setCourse(crs);
+        studentRepository.save(std);
+
+        // Increase the number of participants in the course table
+        crs.setEnrolledStudentsCount(crs.getEnrolledStudentsCount() + 1);
+        courseRepository.save(crs);
+
     }
 
     // Helper method to find the course by courseId
