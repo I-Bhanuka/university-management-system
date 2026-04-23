@@ -58,6 +58,26 @@ public class CourseService {
 
     }
 
+    // De-activating a course method
+    public void deactivateCourseById(CourseIdDTO request) {
+        // Get the course by courseID
+        Course crs = courseRepository.findByCourseId(request.getCourseId()).orElse(null);
+
+        // Check whether the course is null
+        if (crs == null) {
+            log.info("Course with courseId {} not found to de-activate", request.getCourseId());
+            throw new RuntimeException("Course not found");
+        }
+
+        // Set the status to COMPLETED
+        crs.setCourseStatus(CourseStatus.COMPLETED);
+
+        // Save the course
+        courseRepository.save(crs);
+
+
+    }
+
     // Helper method to find the course by courseId
     public Course getCourseByCourseId(String courseId) {
         // Find the Course
