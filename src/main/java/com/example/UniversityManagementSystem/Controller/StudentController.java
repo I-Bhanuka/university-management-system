@@ -27,7 +27,7 @@ public class StudentController {
         return studentService.getAllStudents();
     }
 
-    @GetMapping("/getStudent")
+    @PostMapping("/getStudent")
     public Student getStudent(@Valid @RequestBody StudentIdDTO request) {
         return studentService.getStudent(request);
     }
@@ -39,7 +39,7 @@ public class StudentController {
         return ResponseEntity.ok(new ResponseDTO("Student created Successfully"));
     }
 
-    @GetMapping("/deactivate")
+    @PostMapping("/deactivate")
     public ResponseEntity<ResponseDTO> deactivateStudent(@Valid @RequestBody StudentIdDTO request) {
         studentService.deactivateStudent(request);
 
