@@ -7,6 +7,7 @@ import com.example.UniversityManagementSystem.dto.UpdateCourseDTO;
 import com.example.UniversityManagementSystem.entity.Course;
 import com.example.UniversityManagementSystem.entity.Student;
 import com.example.UniversityManagementSystem.enums.CourseStatus;
+import com.example.UniversityManagementSystem.enums.StudentStatus;
 import com.example.UniversityManagementSystem.repository.CourseRepository;
 import com.example.UniversityManagementSystem.repository.StudentRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -126,6 +127,22 @@ public class CourseService {
 
         // Validate the studentId
         Student std = studentService.findStudentByStudentId(request.getStudentId());
+
+        // Check if the student is ACTIVE, if not throw an exception
+        if (std.getStudentStatus() == StudentStatus.INACTIVE) {
+            throw new RuntimeException("Student is not active and cannot be enrolled in a course");
+        }
+
+        // Check whether course status is SCHEDULED, if not throw an exception
+        if (crs.getCourseStatus() != CourseStatus.SCHEDULED) {
+            throw new RuntimeException("Course is not scheduled and cannot accept new enrollments");
+        }
+
+        // Check whether the student is already enrolled in other courses, as a student can only be enrolled in one course as of now
+        if (std.getCourse() != null) {
+            throw new RuntimeException("Student is already enrolled in a course and cannot be enrolled in another course");
+        }
+
 
         // Then add the courseId to the student entity and save the student entity to the database
         std.setCourse(crs);
