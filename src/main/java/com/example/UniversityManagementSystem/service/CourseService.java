@@ -2,6 +2,7 @@ package com.example.UniversityManagementSystem.service;
 
 import com.example.UniversityManagementSystem.dto.CourseIdDTO;
 import com.example.UniversityManagementSystem.dto.RegisterCourseDTO;
+import com.example.UniversityManagementSystem.dto.UpdateCourseDTO;
 import com.example.UniversityManagementSystem.entity.Course;
 import com.example.UniversityManagementSystem.entity.Student;
 import com.example.UniversityManagementSystem.enums.CourseStatus;
@@ -76,6 +77,39 @@ public class CourseService {
         courseRepository.save(crs);
 
 
+    }
+
+    // Update course details method
+    public void updateCourseDetails(UpdateCourseDTO request) {
+        // Get the course by courseId
+        Course crs = getCourseByCourseId(request.getCourseId());
+
+        // Update the course details
+        if (request.getCourseName() != null && request.getBadge() != null && request.getDurationDays()!= 0) {
+            crs.setCourseName(request.getCourseName());
+            crs.setBadge(request.getBadge());
+            crs.setDurationDays(request.getDurationDays());
+            log.info("Updating course with ID: {}", request.getCourseId());
+            log.info("-- Course Name: {}", request.getCourseName());
+            log.info("-- Badge: {}", request.getBadge());
+            log.info("-- Duration: {}", request.getDurationDays());
+
+        } else if (request.getCourseName() != null) {
+            crs.setCourseName(request.getCourseName());
+            log.info("Updating course with ID: {}", request.getCourseId());
+            log.info("-- Course Name: {}", request.getCourseName());
+        } else if (request.getBadge() != null) {
+            crs.setBadge(request.getBadge());
+            log.info("Updating course with ID: {}", request.getCourseId());
+            log.info("-- Badge: {}", request.getBadge());
+        } else if (request.getDurationDays() != 0) {
+            crs.setDurationDays(request.getDurationDays());
+            log.info("Updating course with ID: {}", request.getCourseId());
+            log.info("-- Duration: {}", request.getDurationDays());
+        }
+
+        // Save the course in the database
+        courseRepository.save(crs);
     }
 
     // Helper method to find the course by courseId
