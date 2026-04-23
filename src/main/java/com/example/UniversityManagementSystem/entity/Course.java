@@ -33,6 +33,9 @@ public class Course {
     @Column(length = 10)
     private String badge;
 
+    @Column(name = "enrolledstudentscount")
+    private int enrolledStudentsCount = 0;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "coursestatus", length = 10, nullable = false)
     private CourseStatus courseStatus = CourseStatus.SCHEDULED;
