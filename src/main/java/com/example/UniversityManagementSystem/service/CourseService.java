@@ -13,6 +13,7 @@ import com.example.UniversityManagementSystem.exception.BadRequestException;
 import com.example.UniversityManagementSystem.exception.CourseNotFoundException;
 import com.example.UniversityManagementSystem.repository.CourseRepository;
 import com.example.UniversityManagementSystem.repository.StudentRepository;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -134,6 +135,7 @@ public class CourseService {
 
     // Enroll students in a course method
     @PreAuthorize("hasRole('ADMIN')")
+    @Transactional
     public void enrollStudentIntoCourse(CourseEnrollDTO request) {
         // Validate the courseId
         Course crs = getCourseByCourseId(request.getCourseId());

@@ -12,6 +12,7 @@ import com.example.UniversityManagementSystem.enums.StudentStatus;
 import com.example.UniversityManagementSystem.exception.StudentNotFoundException;
 import com.example.UniversityManagementSystem.repository.StudentRepository;
 import com.example.UniversityManagementSystem.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,7 @@ public class StudentService {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @Transactional
     public void registerStudent(RegisterStudentDTO request) {
 
         // convert the String DOB into LocalDate
