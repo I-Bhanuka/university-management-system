@@ -28,7 +28,7 @@ public class User implements UserDetails {
     private UUID id;
 
     @Column(nullable = false, unique = true)
-    private String userName;
+    private String username;
 
     @Column(nullable = false)
     private String password;
@@ -47,7 +47,7 @@ public class User implements UserDetails {
     @NullMarked // This annotation says that the return value cannot be null
     @Override
     public String getUsername() {
-        return userName;
+        return username;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
