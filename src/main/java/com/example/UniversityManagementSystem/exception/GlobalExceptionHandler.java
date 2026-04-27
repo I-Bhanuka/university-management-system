@@ -8,6 +8,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -79,7 +80,21 @@ public class GlobalExceptionHandler {
                 .body(ErrorResponseDTO.of(401, "Invalid username or password"));
     }
 
-    // 5. SAFETY NET
+    // 5. Handle Access Denied for authorization failures
+    // Handles @PreAuthorize failures — method level authorization
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<ErrorResponseDTO> handleAuthorizationDenied(
+            AuthorizationDeniedException e) {
+
+        log.warn("Authorization denied: {}", e.getMessage());
+
+        return ResponseEntity
+                .status(403)
+                .body(ErrorResponseDTO.of(403, "Access denied. You do not have permission to perform this action."));
+    }
+
+
+    // 6. SAFETY NET
     //  Catches anything we didn't anticipate — always last
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDTO> handleGeneric(Exception e) {
