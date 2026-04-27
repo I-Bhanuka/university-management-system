@@ -71,7 +71,7 @@ public class AuthService {
             String token = jwtUtil.generateToken(userDetails);
 
             log.info("=== TOKEN GENERATED ===");
-            return new JwtResponseDTO(token, userDetails.getUsername());
+            return new JwtResponseDTO(token, userDetails.getUsername(), userDetails.getAuthorities().toString());
 
         } catch (Exception e) {
             log.error("=== AUTHENTICATION FAILED ===");
