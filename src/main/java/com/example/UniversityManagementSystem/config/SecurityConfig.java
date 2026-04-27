@@ -52,6 +52,7 @@ public class SecurityConfig {
                 // Define access rules
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll() // login/register = public
+                        .requestMatchers("/api/greet").permitAll()
                         .anyRequest().authenticated()                // everything else = needs token
                 )
 
