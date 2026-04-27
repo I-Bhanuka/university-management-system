@@ -8,6 +8,9 @@ import com.example.UniversityManagementSystem.entity.Course;
 import com.example.UniversityManagementSystem.entity.Student;
 import com.example.UniversityManagementSystem.enums.CourseStatus;
 import com.example.UniversityManagementSystem.enums.StudentStatus;
+import com.example.UniversityManagementSystem.exception.AlreadyEnrolledException;
+import com.example.UniversityManagementSystem.exception.BadRequestException;
+import com.example.UniversityManagementSystem.exception.CourseNotFoundException;
 import com.example.UniversityManagementSystem.repository.CourseRepository;
 import com.example.UniversityManagementSystem.repository.StudentRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -132,17 +135,17 @@ public class CourseService {
 
         // Check if the student is ACTIVE, if not throw an exception
         if (std.getStudentStatus() == StudentStatus.INACTIVE) {
-            throw new RuntimeException("Student is not active and cannot be enrolled in a course");
+            throw new BadRequestException("Student is not active and cannot be enrolled in a course");
         }
 
         // Check whether course status is SCHEDULED, if not throw an exception
         if (crs.getCourseStatus() != CourseStatus.SCHEDULED) {
-            throw new RuntimeException("Course is not scheduled and cannot accept new enrollments");
+            throw new BadRequestException("Course is not scheduled and cannot accept new enrollments");
         }
 
         // Check whether the student is already enrolled in other courses, as a student can only be enrolled in one course as of now
         if (std.getCourse() != null) {
-            throw new RuntimeException("Student is already enrolled in a course and cannot be enrolled in another course");
+            throw new AlreadyEnrolledException(std.getStudentId());
         }
 
 
@@ -164,7 +167,7 @@ public class CourseService {
         // If course is not found, log the error and throw an exception
         if (crs == null){
             log.info("Course with courseId {} not found", courseId);
-            throw new RuntimeException("Course not found");
+            throw new CourseNotFoundException("Course not found");
         }
 
         return crs;

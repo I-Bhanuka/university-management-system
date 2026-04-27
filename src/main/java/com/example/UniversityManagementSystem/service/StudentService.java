@@ -7,6 +7,7 @@ import com.example.UniversityManagementSystem.dto.StudentIdDTO;
 import com.example.UniversityManagementSystem.dto.UpdateStudentDTO;
 import com.example.UniversityManagementSystem.entity.Student;
 import com.example.UniversityManagementSystem.enums.StudentStatus;
+import com.example.UniversityManagementSystem.exception.StudentNotFoundException;
 import com.example.UniversityManagementSystem.repository.StudentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -169,7 +170,7 @@ public class StudentService {
         // If student is not found, log the error and throw an exception
         if (std == null){
             log.info("Student with studentId {} not found", studentId);
-            throw new RuntimeException("Student not found");
+            throw new StudentNotFoundException(studentId);
         }
 
         return std;
