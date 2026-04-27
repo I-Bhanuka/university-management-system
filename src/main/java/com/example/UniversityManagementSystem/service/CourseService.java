@@ -11,6 +11,7 @@ import com.example.UniversityManagementSystem.enums.StudentStatus;
 import com.example.UniversityManagementSystem.repository.CourseRepository;
 import com.example.UniversityManagementSystem.repository.StudentRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class CourseService {
     }
 
     // Create course method
+    @PreAuthorize("hasRole('ROLE_LECTURER')") // Only users with the LECTURER role can create courses
     public void createCourse(RegisterCourseDTO request) {
 
         // Create a new course entity from the request data
