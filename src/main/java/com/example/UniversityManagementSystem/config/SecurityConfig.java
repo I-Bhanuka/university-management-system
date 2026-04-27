@@ -59,7 +59,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll() // login/register = public
                         .requestMatchers("/api/greet").permitAll()
-                        .anyRequest().authenticated()                // everything else = needs token
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**"
+                        ).permitAll()                                        // Swagger URL = public
+                        .anyRequest().authenticated()                        // everything else = needs token
                 )
 
                 // Tell Spring which AuthenticationProvider to use
