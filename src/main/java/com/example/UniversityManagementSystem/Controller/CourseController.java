@@ -69,6 +69,15 @@ public class CourseController {
         return ResponseEntity.ok(new ResponseDTO("Student enrolled in course successfully"));
     }
 
+    // Custom endpoint to get the count of students enrolled in each course
+    @GetMapping("/course-count")
+    public ResponseEntity<Object> getCourseCounts() {
+
+        Object response = courseService.countStudentsByCourse();
+
+        return ResponseEntity.ok(response);
+    }
+
     // Assign lecturers to a course
 
 }

@@ -169,6 +169,14 @@ public class CourseService {
 
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public Object countStudentsByCourse() {
+
+        log.info("Count student by course");
+
+        return courseRepository.countStudentsByCourse();
+    }
+
     // Helper method to find the course by courseId
     public Course getCourseByCourseId(String courseId) {
         // Find the Course
