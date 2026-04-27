@@ -104,6 +104,13 @@
 			<scope>runtime</scope>
 		</dependency>
 
+
+		<!-- Jackson library -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
