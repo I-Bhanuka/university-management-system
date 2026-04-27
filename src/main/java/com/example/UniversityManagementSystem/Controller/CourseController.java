@@ -3,6 +3,7 @@ package com.example.UniversityManagementSystem.Controller;
 import com.example.UniversityManagementSystem.dto.*;
 import com.example.UniversityManagementSystem.entity.Course;
 import com.example.UniversityManagementSystem.service.CourseService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/courses")
+@SecurityRequirement(name = "bearerAuth")
 public class CourseController {
 
     private final CourseService courseService;

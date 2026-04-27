@@ -3,6 +3,7 @@ package com.example.UniversityManagementSystem.Controller;
 import com.example.UniversityManagementSystem.dto.*;
 import com.example.UniversityManagementSystem.entity.Student;
 import com.example.UniversityManagementSystem.service.StudentService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController // Marks that this class handles http requests and automatically make the return object json
 @RequestMapping("/api/students")
+@SecurityRequirement(name = "bearerAuth")
 @Slf4j
 public class StudentController {
 
