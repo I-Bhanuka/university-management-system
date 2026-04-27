@@ -35,7 +35,7 @@ public class CourseService {
     }
 
     // Create course method
-    @PreAuthorize("hasRole('ROLE_LECTURER')") // Only users with the LECTURER role can create courses
+    @PreAuthorize("hasRole('ADMIN')") // Only users with the LECTURER role can create courses
     public void createCourse(RegisterCourseDTO request) {
 
         // Create a new course entity from the request data
@@ -58,11 +58,16 @@ public class CourseService {
     }
 
     // Read all courses method
+    // Anyone authenticated can view courses
+    @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT')")
     public List<Course> getAllCourses() {
         return courseRepository.findAll();
     }
 
+
     // Read a course by ID method
+    // Anyone authenticated can view a course
+    @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT')")
     public Course getCourseById(CourseIdDTO request) {
         Course crs = getCourseByCourseId(request.getCourseId());
 
@@ -73,6 +78,7 @@ public class CourseService {
     }
 
     // De-activating a course method
+    @PreAuthorize("hasRole('ADMIN')")
     public void deactivateCourseById(CourseIdDTO request) {
         // Get the course by courseID
         Course crs = courseRepository.findByCourseId(request.getCourseId()).orElse(null);
@@ -93,6 +99,7 @@ public class CourseService {
     }
 
     // Update course details method
+    @PreAuthorize("hasRole('ADMIN')")
     public void updateCourseDetails(UpdateCourseDTO request) {
         // Get the course by courseId
         Course crs = getCourseByCourseId(request.getCourseId());
@@ -126,6 +133,7 @@ public class CourseService {
     }
 
     // Enroll students in a course method
+    @PreAuthorize("hasRole('ADMIN')")
     public void enrollStudentIntoCourse(CourseEnrollDTO request) {
         // Validate the courseId
         Course crs = getCourseByCourseId(request.getCourseId());

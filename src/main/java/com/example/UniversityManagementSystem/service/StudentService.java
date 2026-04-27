@@ -6,10 +6,14 @@ import com.example.UniversityManagementSystem.dto.RegisterStudentDTO;
 import com.example.UniversityManagementSystem.dto.StudentIdDTO;
 import com.example.UniversityManagementSystem.dto.UpdateStudentDTO;
 import com.example.UniversityManagementSystem.entity.Student;
+import com.example.UniversityManagementSystem.entity.User;
+import com.example.UniversityManagementSystem.enums.Role;
 import com.example.UniversityManagementSystem.enums.StudentStatus;
 import com.example.UniversityManagementSystem.exception.StudentNotFoundException;
 import com.example.UniversityManagementSystem.repository.StudentRepository;
+import com.example.UniversityManagementSystem.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -20,20 +24,28 @@ import java.util.List;
 public class StudentService {
 
     private final StudentRepository studentRepository;
+    private final UserRepository userRepository;
 
-    public StudentService(StudentRepository studentRepository) {
+    public StudentService(StudentRepository studentRepository,
+                          UserRepository userRepository) {
         this.studentRepository = studentRepository;
+        this.userRepository = userRepository;
     }
 
+    // Anyone authenticated can view a students
+    @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT')")
     public Student getStudent(StudentIdDTO request) {
         // Find the Student
         return findStudentByStudentId(request.getStudentId());
     }
 
+    // Anyone authenticated can view all students
+    @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT')")
     public List<Student> getAllStudents() {
         return studentRepository.findAll();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     public void registerStudent(RegisterStudentDTO request) {
 
         // convert the String DOB into LocalDate
@@ -66,8 +78,19 @@ public class StudentService {
 
         // Save the Student entity to the database
         studentRepository.save(student);
+
+        // Create a user entity as well, and assign the STUDENT role to the user
+        User saveAsUser = User.builder()
+                .username(request.getFirstName() + request.getLastName())
+                .password("defaultPassword") // You can set a default password or generate one
+                .role(Role.ROLE_STUDENT)
+                .build();
+
+        // Save the user entity to the database
+        userRepository.save(saveAsUser);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     public void deactivateStudent(StudentIdDTO request) {
         // Find the Student
         Student std = findStudentByStudentId(request.getStudentId());
@@ -79,6 +102,7 @@ public class StudentService {
         studentRepository.save(std);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     public void updateStudent(UpdateStudentDTO request) {
         // Find the Student
         Student std = findStudentByStudentId(request.getStudentId());
@@ -104,6 +128,8 @@ public class StudentService {
         studentRepository.save(std);
     }
 
+    // Anyone authenticated can search
+    @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT')")
     public Student searchStudent(NameEmailStudentDTO request) {
         Student std = null;
 
