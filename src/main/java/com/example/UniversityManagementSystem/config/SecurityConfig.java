@@ -1,5 +1,6 @@
 package com.example.UniversityManagementSystem.config;
 
+import com.example.UniversityManagementSystem.security.CustomAccessDeniedHandler;
 import com.example.UniversityManagementSystem.security.JwtFilter;
 import com.example.UniversityManagementSystem.service.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
@@ -42,6 +43,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http)
             throws Exception {
         http
+                // Add exception handling for access denied (403)
+                .exceptionHandling(exception -> exception
+                .accessDeniedHandler(new CustomAccessDeniedHandler()))
+
+
                 // CSRF protection is for browser sessions — not needed for REST APIs
                 .csrf(csrf -> csrf.disable())
 
