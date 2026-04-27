@@ -43,7 +43,7 @@ public class AuthService {
         User user = User.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.ROLE_ADMIN)
+                .role(request.getRole())
                 .build();
 
         // Save the new user to the database using the UserRepository

@@ -1,6 +1,8 @@
 package com.example.UniversityManagementSystem.dto;
 
+import com.example.UniversityManagementSystem.enums.Role;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
@@ -15,5 +17,8 @@ public class RegisterUserRequestDTO {
 
     @NotBlank(message = "Password is required")
     private String password;
+
+    @NotNull(message = "Role is required")
+    private Role role;
 
 }
