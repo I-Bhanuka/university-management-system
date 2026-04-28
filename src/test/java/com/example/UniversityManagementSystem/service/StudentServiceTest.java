@@ -176,4 +176,48 @@ class StudentServiceTest {
     }
 
 
+    // ════════════════════════════════════════════════════════════════════
+    // getStudent() tests
+    // ════════════════════════════════════════════════════════════════════
+
+    @Test
+    @DisplayName("Should return student by student ID when student exists")
+    void shouldRetrieveStudentWhenExists() {
+
+        // ARRANGE
+        String studentId = activeStudent.getStudentId(); // ← pull from the object
+
+        when(studentRepository.findByStudentId(studentId))
+                .thenReturn(Optional.of(activeStudent));
+
+        StudentIdDTO request = new StudentIdDTO(studentId);
+
+        // ACT
+        Student result = studentService.getStudent(request);
+
+        // ASSERT
+        assertNotNull(result);
+        assertEquals(studentId, result.getStudentId());           // ← dynamic
+        assertEquals("Kavindu", result.getFirstName());
+        assertEquals("Mathew", result.getLastName());
+        assertEquals("kavindu@gmail.com", result.getEmail());
+    }
+
+    @Test
+    @DisplayName("Should throw StudentNotFoundException when student does not exist when retrieving")
+    void shouldThrowExceptionWhenStudentNotFoundWhenRetrieving() {
+        // ARRANGE
+        when(studentRepository.findByStudentId("INVALID-ID"))
+                .thenReturn(Optional.empty());
+
+        StudentIdDTO request = new StudentIdDTO("INVALID-ID");
+
+        // ACT and ASSERT
+        assertThrows(
+                StudentNotFoundException.class,
+                () -> studentService.getStudent(request)
+        );
+    }
+
+
 }
