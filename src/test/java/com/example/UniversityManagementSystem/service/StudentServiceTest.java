@@ -253,5 +253,58 @@ class StudentServiceTest {
     }
 
 
+    // ════════════════════════════════════════════════════════════════════
+    // updateStudent() tests
+    // ════════════════════════════════════════════════════════════════════
+
+    @Test
+    @DisplayName("Should throw BadRequestException when no fields provided to update")
+    void shouldThrowBadRequestWhenNoFieldsProvidedToUpdate() {
+        // ARRANGE
+        // 1. Create the UpdateStudentDTO with only studentId and no other fields
+        UpdateStudentDTO request = UpdateStudentDTO.builder()
+                .studentId(activeStudent.getStudentId())
+                .build();
+
+        // 2. Stub: when the repo looks for this student, return active student
+        when(studentRepository.findByStudentId(request.getStudentId()))
+                .thenReturn(Optional.of(activeStudent));
+
+
+        // ACT and ASSERT
+        assertThrows(BadRequestException.class,
+                () -> studentService.updateStudent(request));
+
+    }
+
+
+
+    @Test
+    void shouldUpdateFirstNameOnly() {
+    }
+
+    @Test
+    void shouldUpdateLastNameOnly() {
+    }
+
+    @Test
+    void shouldUpdateDobOnly() {
+    }
+
+    @Test
+    void shouldUpdateEmailOnly() {
+    }
+
+
+
+    @Test
+    void searchStudent() {
+    }
+
+    @Test
+    void findStudentByStudentId() {
+    }
+
+
 
 }
