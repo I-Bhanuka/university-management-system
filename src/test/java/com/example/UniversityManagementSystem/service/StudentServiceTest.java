@@ -344,7 +344,7 @@ class StudentServiceTest {
     @DisplayName("Should update only last name when only last name provided")
     void shouldUpdateLastNameOnly() {
         // ARRANGE
-        // 1. Create the UpdateStudentDTO with only first name to update
+        // 1. Create the UpdateStudentDTO with only last name to update
         UpdateStudentDTO request = UpdateStudentDTO.builder()
                 .studentId(activeStudent.getStudentId())
                 .lastName("UpdatedLastName")
@@ -375,7 +375,7 @@ class StudentServiceTest {
     @DisplayName("Should update only Dob when only Dob provided")
     void shouldUpdateDobOnly() {
         // ARRANGE
-        // 1. Create the UpdateStudentDTO with only first name to update
+        // 1. Create the UpdateStudentDTO with only the dob to update
         UpdateStudentDTO request = UpdateStudentDTO.builder()
                 .studentId(activeStudent.getStudentId())
                 .dob(LocalDate.of(1995, 5, 15))
@@ -403,7 +403,33 @@ class StudentServiceTest {
     }
 
     @Test
+    @DisplayName("Should update only email when only email provided")
     void shouldUpdateEmailOnly() {
+        // ARRANGE
+        // 1. Create the UpdateStudentDTO with only email to update
+        UpdateStudentDTO request = UpdateStudentDTO.builder()
+                .studentId(activeStudent.getStudentId())
+                .email("updatedEmail")
+                .build();
+
+        // 2. Stub: when the repo looks for this student, return active student
+        when(studentRepository.findByStudentId(request.getStudentId()))
+                .thenReturn(Optional.of(activeStudent));
+
+        // ACT
+        Student updatedStudent = studentService.updateStudent(request);
+
+        // ASSERT
+        // 1. Verify only first name is updated correctly
+        assertEquals("updatedEmail", updatedStudent.getEmail());
+
+        // 2. Verify other fields remain unchanged
+        assertEquals("Kavindu", updatedStudent.getFirstName());
+        assertEquals("Mathew", updatedStudent.getLastName());
+        assertEquals(LocalDate.of(2000, 1, 1), updatedStudent.getDob());
+
+        // 3. Verify save() was called once, meaning the change was persisted
+        verify(studentRepository, times(1)).save(activeStudent);
     }
 
 
