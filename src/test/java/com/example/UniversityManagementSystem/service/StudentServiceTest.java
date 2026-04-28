@@ -110,5 +110,43 @@ class StudentServiceTest {
         verify(studentRepository, never()).save(any(Student.class));
     }
 
+    // ════════════════════════════════════════════════════════════════════
+    // generateStudentId() tests
+    // ════════════════════════════════════════════════════════════════════
+
+    @Test
+    @DisplayName("Should generate student ID when there is no previous student")
+    void shouldGenerateStudentIdWhenNoPreviousStudent() {
+
+        // ARRANGE
+        // Stub: when the repo looks for the last student, return empty
+        when(studentRepository.findTopByOrderByCreatedAtDesc())
+                .thenReturn(Optional.empty());
+
+        // ACT
+        String generatedId = studentService.generateStudentId();
+
+        // ASSERT
+        String expectedId = String.format("ST-%d0000", java.time.LocalDate.now().getYear());
+        assertEquals(expectedId, generatedId);
+    }
+
+    @Test
+    @DisplayName("Should generate student ID when previous student exists")
+    void shouldGenerateStudentIdWhenPreviousStudentExists() {
+
+        // ARRANGE
+        // Stub: when the repo looks for the last student, return activeStudent
+        when(studentRepository.findTopByOrderByCreatedAtDesc())
+                .thenReturn(Optional.of(activeStudent));
+
+        // ACT
+        String generatedId = studentService.generateStudentId();
+
+        // ASSERT
+        String expectedId = String.format("ST-%d%04d", LocalDate.now().getYear(), 2);
+        assertEquals(expectedId, generatedId);
+    }
+
 
 }
