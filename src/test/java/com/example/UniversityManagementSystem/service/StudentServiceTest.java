@@ -259,6 +259,25 @@ class StudentServiceTest {
     // ════════════════════════════════════════════════════════════════════
 
     @Test
+    @DisplayName("Should throw StudentNotFoundException when student does not exist during update")
+    void shouldThrowExceptionWhenStudentNotFoundDuringUpdate(){
+        // ARRANGE
+        // 1. Create the UpdateStudentDTO with a non-existing student ID
+        UpdateStudentDTO request = UpdateStudentDTO.builder()
+                .studentId("INVALID-ID")
+                .firstName("UpdatedFirstName")
+                .build();
+
+        // 2. Stub: when the repo looks for this student, return empty
+        when(studentRepository.findByStudentId("INVALID-ID"))
+                .thenReturn(Optional.empty());
+
+        // ACT and ASSERT
+        assertThrows(StudentNotFoundException.class,
+                ()-> studentService.updateStudent(request));
+    }
+
+    @Test
     @DisplayName("Should throw BadRequestException when no fields provided to update")
     void shouldThrowBadRequestWhenNoFieldsProvidedToUpdate() {
         // ARRANGE
