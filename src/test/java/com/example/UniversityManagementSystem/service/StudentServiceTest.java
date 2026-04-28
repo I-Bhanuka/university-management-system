@@ -520,6 +520,31 @@ class StudentServiceTest {
                 () -> studentService.searchStudent(request));
     }
 
+    @Test
+    @DisplayName("Should return student when student exists with given name and email")
+    void shouldGetStudentByNameAndEmailSuccessfully() {
+        // ARRANGE
+        // 1. Create the NameEmailStudentDTO with name and email that match active student
+        NameEmailStudentDTO request = NameEmailStudentDTO.builder()
+                .firstName(activeStudent.getFirstName())
+                .email(activeStudent.getEmail())
+                .build();
+
+        // 2. Stub: when the repo looks for this student, return active student
+        when(studentRepository.findByFirstNameAndEmail(request.getFirstName(), request.getEmail()))
+                .thenReturn(Optional.of(activeStudent));
+
+        // ACT
+        Student result = studentService.searchStudent(request);
+
+        // ASSERT
+        // 1. Verify the returned student matches the active student
+        assertNotNull(result);
+        assertEquals(activeStudent.getFirstName(), result.getFirstName());
+        assertEquals(activeStudent.getEmail(), result.getEmail());
+
+    }
+
 
 
     @Test
