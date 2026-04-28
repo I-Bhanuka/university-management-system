@@ -372,7 +372,34 @@ class StudentServiceTest {
     }
 
     @Test
+    @DisplayName("Should update only Dob when only Dob provided")
     void shouldUpdateDobOnly() {
+        // ARRANGE
+        // 1. Create the UpdateStudentDTO with only first name to update
+        UpdateStudentDTO request = UpdateStudentDTO.builder()
+                .studentId(activeStudent.getStudentId())
+                .dob(LocalDate.of(1995, 5, 15))
+                .build();
+
+        // 2. Stub: when the repo looks for this student, return active student
+        when(studentRepository.findByStudentId(request.getStudentId()))
+                .thenReturn(Optional.of(activeStudent));
+
+        // ACT
+        Student updatedStudent = studentService.updateStudent(request);
+
+        // ASSERT
+        // 1. Verify only first name is updated correctly
+        assertEquals(LocalDate.of(1995, 5, 15), updatedStudent.getDob());
+
+        // 2. Verify other fields remain unchanged
+        assertEquals("Kavindu", updatedStudent.getFirstName());
+        assertEquals("Mathew", updatedStudent.getLastName());
+        assertEquals("kavindu@gmail.com", updatedStudent.getEmail());
+
+        // 3. Verify save() was called once, meaning the change was persisted
+        verify(studentRepository, times(1)).save(activeStudent);
+
     }
 
     @Test
