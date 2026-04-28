@@ -432,6 +432,26 @@ class StudentServiceTest {
         verify(studentRepository, times(1)).save(activeStudent);
     }
 
+    @Test
+    @DisplayName("Should throw BadRequestException when firstName is empty string")
+    void shouldThrowBadRequestWhenFirstNameIsEmpty() {
+        // ARRANGE
+        // 1. Create the UpdateStudentDTO with first name as empty string
+        UpdateStudentDTO request = UpdateStudentDTO.builder()
+                .firstName("")
+                .build();
+
+        // 2. Stub: when the repo looks for this student, return acive student
+        when(studentRepository.findByStudentId(request.getStudentId()))
+                .thenReturn(Optional.of(activeStudent));
+
+        // ACT and ASSERT
+        assertThrows(BadRequestException.class,
+                () -> studentService.updateStudent(request));
+
+
+    }
+
 
 
     @Test
