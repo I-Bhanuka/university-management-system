@@ -1,5 +1,6 @@
 package com.example.UniversityManagementSystem.service;
 
+import com.example.UniversityManagementSystem.dto.NameEmailStudentDTO;
 import com.example.UniversityManagementSystem.dto.RegisterStudentDTO;
 import com.example.UniversityManagementSystem.dto.StudentIdDTO;
 import com.example.UniversityManagementSystem.dto.UpdateStudentDTO;
@@ -491,10 +492,35 @@ class StudentServiceTest {
 
     }
 
+    // The empty body and the same value passed exception testing has to be done for last name, email and dob as well
+    // but for brevity I have only included it for first name. The same pattern can be followed for the other fields.
+
+
+    // ════════════════════════════════════════════════════════════════════
+    // searchStudent() tests
+    // ════════════════════════════════════════════════════════════════════
+
 
     @Test
-    void searchStudent() {
+    @DisplayName("Should throw StudentNotFoundException when student does not exist when searching by name and email")
+    void shouldThrowStudentNotFoundWhenSearchStudentNotFound() {
+        // ARRANGE
+        // 1. Create the NameEmailStudentDTO with name and email that do not match
+        NameEmailStudentDTO request = NameEmailStudentDTO.builder()
+                .firstName("NonExistingFirstName")
+                .email("NonExistingEmail")
+                .build();
+
+        // 2. Stub: when the repo looks for this student, return empty
+        when(studentRepository.findByFirstNameAndEmail(request.getFirstName(), request.getEmail()))
+                .thenReturn(Optional.empty());
+
+        // ACT and ASSERT
+        assertThrows(StudentNotFoundException.class,
+                () -> studentService.searchStudent(request));
     }
+
+
 
     @Test
     void findStudentByStudentId() {
