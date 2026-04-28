@@ -452,6 +452,25 @@ class StudentServiceTest {
 
     }
 
+    @Test
+    @DisplayName("Should throw BadRequestException when firstName is same as current value")
+    void shouldThrowBadRequestWhenFirstNameIsSameAsCurrent() {
+        // ARRANGE
+        // 1. Create the UpdateStudentDTO with first name as the same as current value
+        UpdateStudentDTO request = UpdateStudentDTO.builder()
+                .firstName(activeStudent.getFirstName())
+                .build();
+
+        // 2. Stub: when the repo looks for this student, return acive student
+        when(studentRepository.findByStudentId(request.getStudentId()))
+                .thenReturn(Optional.of(activeStudent));
+
+        // ACT and ASSERT
+        assertThrows(BadRequestException.class,
+                () -> studentService.updateStudent(request));
+
+
+    }
 
 
     @Test
