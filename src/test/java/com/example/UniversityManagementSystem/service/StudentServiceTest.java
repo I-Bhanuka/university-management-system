@@ -332,9 +332,9 @@ class StudentServiceTest {
         assertEquals("UpdatedFirstName", updatedStudent.getFirstName());
 
         // 2. Verify other fields remain unchanged
-        assertEquals("Mathew", updatedStudent.getLastName());
-        assertEquals("kavindu@gmail.com", updatedStudent.getEmail());
-        assertEquals(LocalDate.of(2000, 1, 1), updatedStudent.getDob());
+        assertEquals(activeStudent.getLastName(), updatedStudent.getLastName());
+        assertEquals(activeStudent.getEmail(), updatedStudent.getEmail());
+        assertEquals(activeStudent.getDob(), updatedStudent.getDob());
 
         // 3. Verify save() was called once, meaning the change was persisted
         verify(studentRepository, times(1)).save(activeStudent);
@@ -362,9 +362,9 @@ class StudentServiceTest {
         assertEquals("UpdatedLastName", updatedStudent.getLastName());
 
         // 2. Verify other fields remain unchanged
-        assertEquals("Kavindu", updatedStudent.getFirstName());
-        assertEquals("kavindu@gmail.com", updatedStudent.getEmail());
-        assertEquals(LocalDate.of(2000, 1, 1), updatedStudent.getDob());
+        assertEquals(activeStudent.getFirstName(), updatedStudent.getFirstName());
+        assertEquals(activeStudent.getEmail(), updatedStudent.getEmail());
+        assertEquals(activeStudent.getDob(), updatedStudent.getDob());
 
         // 3. Verify save() was called once, meaning the change was persisted
         verify(studentRepository, times(1)).save(activeStudent);
@@ -393,9 +393,9 @@ class StudentServiceTest {
         assertEquals(LocalDate.of(1995, 5, 15), updatedStudent.getDob());
 
         // 2. Verify other fields remain unchanged
-        assertEquals("Kavindu", updatedStudent.getFirstName());
-        assertEquals("Mathew", updatedStudent.getLastName());
-        assertEquals("kavindu@gmail.com", updatedStudent.getEmail());
+        assertEquals(activeStudent.getFirstName(), updatedStudent.getFirstName());
+        assertEquals(activeStudent.getLastName(), updatedStudent.getLastName());
+        assertEquals(activeStudent.getEmail(), updatedStudent.getEmail());
 
         // 3. Verify save() was called once, meaning the change was persisted
         verify(studentRepository, times(1)).save(activeStudent);
@@ -424,9 +424,9 @@ class StudentServiceTest {
         assertEquals("updatedEmail", updatedStudent.getEmail());
 
         // 2. Verify other fields remain unchanged
-        assertEquals("Kavindu", updatedStudent.getFirstName());
-        assertEquals("Mathew", updatedStudent.getLastName());
-        assertEquals(LocalDate.of(2000, 1, 1), updatedStudent.getDob());
+        assertEquals(activeStudent.getFirstName(), updatedStudent.getFirstName());
+        assertEquals(activeStudent.getLastName(), updatedStudent.getLastName());
+        assertEquals(activeStudent.getDob(), updatedStudent.getDob());
 
         // 3. Verify save() was called once, meaning the change was persisted
         verify(studentRepository, times(1)).save(activeStudent);
