@@ -148,5 +148,32 @@ class StudentServiceTest {
         assertEquals(expectedId, generatedId);
     }
 
+    // ════════════════════════════════════════════════════════════════════
+    // registerStudent() tests
+    // ════════════════════════════════════════════════════════════════════
+
+    @Test
+    @DisplayName("Should successfully register a new student")
+    void shouldRegisterStudent() {
+
+        // ARRANGE
+        RegisterStudentDTO request = new RegisterStudentDTO(
+                "John",
+                "Doe",
+                "2000-01-01",
+                "doe@gmail.com");
+
+        // ACT
+        studentService.registerStudent(request);
+
+        // ASSERT
+        // Verify that save() was called once, meaning the student was registered
+        verify(studentRepository, times(1)).save(any(Student.class));
+
+        // Verify that save() of userRepository was called once, meaning the user account was created
+        verify(userRepository, times(1)).save(any(User.class));
+
+    }
+
 
 }
