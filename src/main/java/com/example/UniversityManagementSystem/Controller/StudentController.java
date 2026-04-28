@@ -62,7 +62,15 @@ public class StudentController {
 
     // Custom search endpoint to search for a student by name or email
     @GetMapping("/search")
-    public Student searchStudent(@Valid @RequestBody NameEmailStudentDTO request) {
+    public Student searchStudent(
+            @RequestParam(required = false) String firstName,
+            @RequestParam(required = false) String email) {
+
+        NameEmailStudentDTO request = NameEmailStudentDTO.builder()
+                .firstName(firstName)
+                .email(email)
+                .build();
+
         return studentService.searchStudent(request);
     }
 

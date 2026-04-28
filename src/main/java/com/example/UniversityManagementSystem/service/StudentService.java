@@ -17,6 +17,7 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -198,7 +199,7 @@ public class StudentService {
 
         if (std == null) {
             log.info("Student with name {} or email {} not found", request.getFirstName(), request.getEmail());
-            throw new RuntimeException("Student not found");
+            throw new StudentNotFoundException(request.getFirstName());
         } else  {
             return std;
         }
