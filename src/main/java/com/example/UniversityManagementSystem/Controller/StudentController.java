@@ -6,6 +6,7 @@ import com.example.UniversityManagementSystem.service.StudentService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,13 +50,13 @@ public class StudentController {
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<ResponseDTO> updateStudent(@Valid @RequestBody UpdateStudentDTO request) {
+    public ResponseEntity<Student> updateStudent(@Valid @RequestBody UpdateStudentDTO request) {
 
         log.info(request.getStudentId());
 
-        studentService.updateStudent(request);
+        Student updatedStudent = studentService.updateStudent(request);
 
-        return  ResponseEntity.ok(new ResponseDTO("Student updated Successfully"));
+        return  ResponseEntity.status(200).body(updatedStudent);
     }
 
 

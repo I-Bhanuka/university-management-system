@@ -9,6 +9,7 @@ import com.example.UniversityManagementSystem.entity.Student;
 import com.example.UniversityManagementSystem.entity.User;
 import com.example.UniversityManagementSystem.enums.Role;
 import com.example.UniversityManagementSystem.enums.StudentStatus;
+import com.example.UniversityManagementSystem.exception.BadRequestException;
 import com.example.UniversityManagementSystem.exception.StudentNotFoundException;
 import com.example.UniversityManagementSystem.repository.StudentRepository;
 import com.example.UniversityManagementSystem.repository.UserRepository;
@@ -104,30 +105,82 @@ public class StudentService {
         studentRepository.save(std);
     }
 
+    @Transactional
     @PreAuthorize("hasRole('ADMIN')")
-    public void updateStudent(UpdateStudentDTO request) {
+    public Student updateStudent(UpdateStudentDTO request) {
+
+        boolean updated = false;
+
         // Find the Student
         Student std = findStudentByStudentId(request.getStudentId());
 
         // Update the student information
         if (request.getFirstName() != null) {
+            if (request.getFirstName().isEmpty()) {
+                log.warn("Empty first name provided for student with ID: {}", request.getStudentId());
+                log.info("Skipping update for first name of student with ID: {}", request.getStudentId());
+                throw new BadRequestException("Update failed: First name cannot be empty.");
+            }
+
+            if (request.getFirstName().equals(std.getFirstName())) {
+                log.warn("Same first name provided for student with ID: {}", request.getStudentId());
+                log.info("Skipping update for first name of student with ID: {}", request.getStudentId());
+                throw new BadRequestException("Update failed: First name is the same as the current value.");
+            }
+
             std.setFirstName(request.getFirstName());
+            updated = true;
         }
 
         if (request.getLastName() != null) {
+            if  (request.getLastName().isEmpty()) {
+                log.warn("Empty last name provided for student with ID: {}", request.getStudentId());
+                log.info("Skipping update for last name of student with ID: {}", request.getStudentId());
+                throw new BadRequestException("Update failed: Last name cannot be empty.");
+            }
+
+            if (request.getLastName().equals(std.getLastName())) {
+                log.warn("Same last name provided for student with ID: {}", request.getStudentId());
+                log.info("Skipping update for last name of student with ID: {}", request.getStudentId());
+                throw new BadRequestException("Update failed: Last name is the same as the current value.");
+            }
+
             std.setLastName(request.getLastName());
+            updated = true;
         }
 
         if (request.getDob() != null) {
             std.setDob(request.getDob());
+            updated = true;
         }
 
         if (request.getEmail() != null) {
+            if (request.getEmail().isEmpty()) {
+                log.warn("Empty email provided for student with ID: {}", request.getStudentId());
+                log.info("Skipping update for email of student with ID: {}", request.getStudentId());
+                throw new BadRequestException("Update failed: Email cannot be empty.");
+            }
+
+            if (request.getEmail().equals(std.getEmail())) {
+                log.warn("Same email provided for student with ID: {}", request.getStudentId());
+                log.info("Skipping update for email of student with ID: {}", request.getStudentId());
+                throw new BadRequestException("Update failed: Email is the same as the current value.");
+            }
+
             std.setEmail(request.getEmail());
+            updated = true;
+        }
+
+        if (!updated) {
+            log.warn("No fields provided to update for student with ID: {}", request.getStudentId());
+            log.info("Skipping update for student with ID: {}", request.getStudentId());
+            throw new BadRequestException("Update failed: At least one field (firstName, lastName, dob, email) must be provided for update.");
         }
 
         // Save the changes to the database
         studentRepository.save(std);
+
+        return std;
     }
 
     // Anyone authenticated can search
