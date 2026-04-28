@@ -219,5 +219,39 @@ class StudentServiceTest {
         );
     }
 
+    // ════════════════════════════════════════════════════════════════════
+    // getAllStudents() tests
+    // ════════════════════════════════════════════════════════════════════
+
+    @Test
+    @DisplayName("Should return all students when students exist")
+    void shouldRetrieveAllStudentsWhenExits() {
+        // ARRANGE
+        when(studentRepository.findAll())
+                .thenReturn(java.util.List.of(activeStudent));
+
+        // ACT
+        List<Student> result = studentService.getAllStudents();
+
+        // ASSERT
+        assertNotNull(result);
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    @DisplayName("Should return empty list when no students exist")
+    void shouldRetrieveNoneWhenNoStudentsExist() {
+        // ARRANGE
+        when(studentRepository.findAll())
+                .thenReturn(java.util.Collections.emptyList());
+
+        // ACT
+        List<Student> result = studentService.getAllStudents();
+
+        // ASSERT
+        assertTrue(result.isEmpty());
+    }
+
+
 
 }
