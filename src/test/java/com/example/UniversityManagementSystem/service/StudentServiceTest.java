@@ -341,7 +341,34 @@ class StudentServiceTest {
     }
 
     @Test
+    @DisplayName("Should update only last name when only last name provided")
     void shouldUpdateLastNameOnly() {
+        // ARRANGE
+        // 1. Create the UpdateStudentDTO with only first name to update
+        UpdateStudentDTO request = UpdateStudentDTO.builder()
+                .studentId(activeStudent.getStudentId())
+                .lastName("UpdatedLastName")
+                .build();
+
+        // 2. Stub: when the repo looks for this student, return active student
+        when(studentRepository.findByStudentId(request.getStudentId()))
+                .thenReturn(Optional.of(activeStudent));
+
+        // ACT
+        Student updatedStudent = studentService.updateStudent(request);
+
+        // ASSERT
+        // 1. Verify only first name is updated correctly
+        assertEquals("UpdatedLastName", updatedStudent.getLastName());
+
+        // 2. Verify other fields remain unchanged
+        assertEquals("Kavindu", updatedStudent.getFirstName());
+        assertEquals("kavindu@gmail.com", updatedStudent.getEmail());
+        assertEquals(LocalDate.of(2000, 1, 1), updatedStudent.getDob());
+
+        // 3. Verify save() was called once, meaning the change was persisted
+        verify(studentRepository, times(1)).save(activeStudent);
+
     }
 
     @Test
