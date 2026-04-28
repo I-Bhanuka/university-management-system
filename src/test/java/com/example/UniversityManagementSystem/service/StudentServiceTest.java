@@ -277,6 +277,37 @@ class StudentServiceTest {
 
     }
 
+    @Test
+    @DisplayName("Should update all fields successfully when all fields provided")
+    void shouldUpdateAllFields() {
+        // ARRANGE
+        // 1. Create the UpdateStudentDTO with all fields to update
+        UpdateStudentDTO request = UpdateStudentDTO.builder()
+                .studentId(activeStudent.getStudentId())
+                .firstName("UpdatedFirstName")
+                .lastName("UpdatedLastName")
+                .email("updatedEmail")
+                .dob(LocalDate.of(1995, 5, 15))
+                .build();
+
+        // 2. Stub: when the repo looks for this student, return active student
+        when(studentRepository.findByStudentId(request.getStudentId()))
+                .thenReturn(Optional.of(activeStudent));
+
+        // ACT
+        Student updatedStudent = studentService.updateStudent(request);
+
+        // ASSERT
+        // 1. Verify all fields are updated correctly
+        assertEquals("UpdatedFirstName", updatedStudent.getFirstName());
+        assertEquals("UpdatedLastName", updatedStudent.getLastName());
+        assertEquals("updatedEmail", updatedStudent.getEmail());
+        assertEquals(LocalDate.of(1995, 5, 15), updatedStudent.getDob());
+
+        // 2. Verify save() was called once, meaning the change was persisted
+        verify(studentRepository, times(1)).save(activeStudent);
+    }
+
 
 
     @Test
