@@ -4,8 +4,10 @@ import com.example.UniversityManagementSystem.dto.requestDTOs.NameEmailStudentDT
 import com.example.UniversityManagementSystem.dto.requestDTOs.RegisterStudentDTO;
 import com.example.UniversityManagementSystem.dto.requestDTOs.StudentIdDTO;
 import com.example.UniversityManagementSystem.dto.requestDTOs.UpdateStudentDTO;
+import com.example.UniversityManagementSystem.dto.responseDTOs.StudentResponseDTO;
 import com.example.UniversityManagementSystem.entity.Student;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface StudentService {
@@ -20,6 +22,6 @@ public interface StudentService {
 
     Student updateStudent(UpdateStudentDTO request);
 
-    Student searchStudent(NameEmailStudentDTO request);
+    ArrayList<StudentResponseDTO> searchStudent(NameEmailStudentDTO request);
 
 }
