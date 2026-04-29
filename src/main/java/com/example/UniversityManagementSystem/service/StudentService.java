@@ -22,6 +22,6 @@ public interface StudentService {
 
     Student updateStudent(UpdateStudentDTO request);
 
-    ArrayList<StudentResponseDTO> searchStudent(NameEmailStudentDTO request);
+    ArrayList<StudentResponseDTO> searchStudent(String firstName, String email);
 
 }

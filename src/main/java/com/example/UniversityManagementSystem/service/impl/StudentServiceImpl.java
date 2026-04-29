@@ -189,7 +189,7 @@ public class StudentServiceImpl implements StudentService {
     // Anyone authenticated can search
     @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT')")
     @Override
-    public ArrayList<StudentResponseDTO> searchStudent(NameEmailStudentDTO request) {
+    public ArrayList<StudentResponseDTO> searchStudent(String firstName, String email) {
 //        Student std = null;
 //
 //        if (request.getFirstName() != null && request.getEmail() != null){
@@ -207,18 +207,15 @@ public class StudentServiceImpl implements StudentService {
 //            return std;
 //        }
 
-        String firstName = request.getFirstName();
-        String email = request.getEmail();
-
         List<Student> result = studentRepository.findStudentByFirstNameAndEmail(firstName, email);
 
         if (result.isEmpty()) {
-            log.info("No records were found with Students with name {} or email {}.", request.getFirstName(), request.getEmail());
-            throw new StudentNotFoundException("Name: " + request.getFirstName() + " or Email " + request.getEmail());
+            log.info("No records were found with Students with name {} or email {}.",firstName, email);
+            throw new StudentNotFoundException("Name: " + firstName + " or Email " + email);
         }
 
         log.info("================== Search Results =================");
-        log.info("Search criteria - First Name: {}, Email: {}", request.getFirstName(), request.getEmail());
+        log.info("Search criteria - First Name: {}, Email: {}", firstName, email);
 
         // Convert the search results into List of StudentResponseDTO for better logging and response formatting
         ArrayList<StudentResponseDTO> responseDTO = new ArrayList<>();
