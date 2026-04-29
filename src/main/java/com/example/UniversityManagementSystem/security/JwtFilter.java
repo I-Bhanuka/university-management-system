@@ -39,11 +39,15 @@ public class JwtFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
+        log.info("======> JWT Filter executing for request: {} {}", request.getMethod(), request.getRequestURI());
+
         // 1. Look for the Authorization header
         String authHeader = request.getHeader("Authorization");
 
         // 2. No token? Skip this filter entirely — pass request forward
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            log.warn("Authorization header not present");
+            log.info("Skipping JWT filter for this request");
             filterChain.doFilter(request, response);
             return;
         }
@@ -75,10 +79,12 @@ public class JwtFilter extends OncePerRequestFilter {
 
                 // 9. Pin it to the notice board for this request
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+                log.info("JWT pinned in SecurityContextHolder for user: {}", username);
             }
         }
 
         // 10. Pass the request to the next filter in the chain
+        log.info("Passing request to next filter in chain");
         filterChain.doFilter(request, response);
     }
 }
