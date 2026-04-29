@@ -1,4 +1,4 @@
-package com.example.UniversityManagementSystem.dto;
+package com.example.UniversityManagementSystem.dto.requestDTOs;
 
 
 import jakarta.validation.constraints.NotBlank;

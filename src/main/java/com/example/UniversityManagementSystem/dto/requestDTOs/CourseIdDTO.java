@@ -1,4 +1,4 @@
-package com.example.UniversityManagementSystem.dto;
+package com.example.UniversityManagementSystem.dto.requestDTOs;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -8,11 +8,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UpdateCourseDTO {
+public class CourseIdDTO {
+
     @NotBlank(message = "Course ID is required")
     private String courseId;
-
-    private String courseName;
-    private String badge;
-    private int durationDays;
 }
