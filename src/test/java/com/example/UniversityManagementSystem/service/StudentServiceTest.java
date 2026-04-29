@@ -4,6 +4,7 @@ import com.example.UniversityManagementSystem.dto.requestDTOs.NameEmailStudentDT
 import com.example.UniversityManagementSystem.dto.requestDTOs.RegisterStudentDTO;
 import com.example.UniversityManagementSystem.dto.requestDTOs.StudentIdDTO;
 import com.example.UniversityManagementSystem.dto.requestDTOs.UpdateStudentDTO;
+import com.example.UniversityManagementSystem.dto.responseDTOs.StudentResponseDTO;
 import com.example.UniversityManagementSystem.entity.Student;
 import com.example.UniversityManagementSystem.entity.User;
 import com.example.UniversityManagementSystem.enums.StudentStatus;
@@ -22,6 +23,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -506,43 +509,48 @@ class StudentServiceTest {
     @DisplayName("Should throw StudentNotFoundException when student does not exist when searching by name and email")
     void shouldThrowStudentNotFoundWhenSearchStudentNotFound() {
         // ARRANGE
-        // 1. Create the NameEmailStudentDTO with name and email that do not match
-        NameEmailStudentDTO request = NameEmailStudentDTO.builder()
-                .firstName("NonExistingFirstName")
-                .email("NonExistingEmail")
-                .build();
+        // 1. Create an empty List<Student>
+        List<Student> emptyList = new ArrayList<>();
 
-        // 2. Stub: when the repo looks for this student, return empty
-        when(studentRepository.findByFirstNameAndEmail(request.getFirstName(), request.getEmail()))
-                .thenReturn(Optional.empty());
+        // 2. Create the required field with non-existing name and email
+        String firstName = "non-existing";
+        String email = "non-existing";
+
+        // 3. Stub: when the repo looks for this student, return empty
+        when(studentRepository.findStudentByFirstNameAndEmail(firstName, email))
+                .thenReturn(emptyList);
 
         // ACT and ASSERT
         assertThrows(StudentNotFoundException.class,
-                () -> studentService.searchStudent(request));
+                () -> studentService.searchStudent(firstName, email));
     }
 
     @Test
     @DisplayName("Should return student when student exists with given name and email")
     void shouldGetStudentByNameAndEmailSuccessfully() {
         // ARRANGE
-        // 1. Create the NameEmailStudentDTO with name and email that match active student
-        NameEmailStudentDTO request = NameEmailStudentDTO.builder()
-                .firstName(activeStudent.getFirstName())
-                .email(activeStudent.getEmail())
-                .build();
+        // 1. Create the required field with non-existing name and email
+        String firstName = activeStudent.getFirstName();
+        String email = activeStudent.getEmail();
+
+        // 2. Create the Student response
+        List<Student> exextedList = Arrays.asList(activeStudent);
+
 
         // 2. Stub: when the repo looks for this student, return active student
-        when(studentRepository.findByFirstNameAndEmail(request.getFirstName(), request.getEmail()))
-                .thenReturn(Optional.of(activeStudent));
+        when(studentRepository.findStudentByFirstNameAndEmail(firstName, email))
+                .thenReturn(exextedList);
 
         // ACT
-        Student result = studentService.searchStudent(request);
+        ArrayList<StudentResponseDTO> result = studentService.searchStudent(firstName, email);
 
         // ASSERT
         // 1. Verify the returned student matches the active student
         assertNotNull(result);
-        assertEquals(activeStudent.getFirstName(), result.getFirstName());
-        assertEquals(activeStudent.getEmail(), result.getEmail());
+        assertEquals(result.getFirst().getFirstName(), firstName); // Checks first name
+        assertEquals(result.getFirst().getEmail(), email); // Checks email
+        assertEquals(result.getFirst().getLastName(), exextedList.getFirst().getLastName()); // Checks last name
+        assertEquals(result.getFirst().getDob(), exextedList.getFirst().getDob()); // Checks dob
 
     }
 
