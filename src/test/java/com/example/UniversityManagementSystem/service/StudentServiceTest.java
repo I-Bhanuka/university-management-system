@@ -545,10 +545,42 @@ class StudentServiceTest {
 
     }
 
+    // ════════════════════════════════════════════════════════════════════
+    // findStudentByStudentId() tests
+    // ════════════════════════════════════════════════════════════════════
 
 
     @Test
-    void findStudentByStudentId() {
+    @DisplayName("Should return student when student exists with given student ID")
+    void shouldReturnStudentIfFound() {
+        // ARRANGE
+        // 1. Create the DTO with the student ID of the active student
+        StudentIdDTO request = StudentIdDTO.builder()
+                .studentId(activeStudent.getStudentId())
+                .build();
+
+        // 2. Stub: when the repo looks for this student, return active student
+        when(studentRepository.findByStudentId(request.getStudentId()))
+                .thenReturn(Optional.of(activeStudent));
+
+        // ACT
+        Student result = studentService.findStudentByStudentId(request.getStudentId());
+
+        // ASSERT
+        // 1. Verify the returned student matches the active student
+        assertNotNull(result);
+        assertEquals(activeStudent.getStudentId(), result.getStudentId());
+
+        // 2. Verify that findByStudentId() was called once with the correct student ID
+        verify(studentRepository, times(1)).findByStudentId(request.getStudentId());
+
+    }
+
+
+    @Test
+    @DisplayName("Should throw StudentNotFoundException when student does not exist with given student ID")
+    void shouldThrowStudentNotFoundExceptionIfNotFound() {
+
     }
 
 
