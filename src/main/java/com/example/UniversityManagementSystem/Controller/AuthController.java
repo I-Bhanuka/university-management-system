@@ -5,6 +5,7 @@ import com.example.UniversityManagementSystem.dto.LoginUserRequestDTO;
 import com.example.UniversityManagementSystem.dto.RegisterUserRequestDTO;
 import com.example.UniversityManagementSystem.dto.ResponseDTO;
 import com.example.UniversityManagementSystem.service.AuthService;
+import com.example.UniversityManagementSystem.service.impl.AuthServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,9 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final AuthService authService;
+    private final AuthServiceImpl authService;
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthServiceImpl authService) {
         this.authService = authService;
     }
 
