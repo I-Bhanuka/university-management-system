@@ -31,6 +31,8 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void register(RegisterUserRequestDTO request) {
 
+        log.info("==================== Register User ==================");
+
         // Instantiate a new User entity and set its properties
         User user = User.builder()
                 .username(request.getUsername())
