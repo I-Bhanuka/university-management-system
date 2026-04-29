@@ -4,6 +4,7 @@ import com.example.UniversityManagementSystem.dto.requestDTOs.CourseEnrollDTO;
 import com.example.UniversityManagementSystem.dto.requestDTOs.CourseIdDTO;
 import com.example.UniversityManagementSystem.dto.requestDTOs.RegisterCourseDTO;
 import com.example.UniversityManagementSystem.dto.requestDTOs.UpdateCourseDTO;
+import com.example.UniversityManagementSystem.dto.responseDTOs.CourseCount;
 import com.example.UniversityManagementSystem.entity.Course;
 import com.example.UniversityManagementSystem.entity.Student;
 import com.example.UniversityManagementSystem.enums.CourseStatus;
@@ -173,7 +174,7 @@ public class CourseServiceImpl implements CourseService {
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @Override
-    public Object countStudentsByCourse() {
+    public List<CourseCount> countStudentsByCourse() {
 
         log.info("Count student by course");
 

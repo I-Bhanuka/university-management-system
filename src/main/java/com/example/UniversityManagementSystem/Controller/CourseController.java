@@ -4,6 +4,7 @@ import com.example.UniversityManagementSystem.dto.requestDTOs.CourseEnrollDTO;
 import com.example.UniversityManagementSystem.dto.requestDTOs.CourseIdDTO;
 import com.example.UniversityManagementSystem.dto.requestDTOs.RegisterCourseDTO;
 import com.example.UniversityManagementSystem.dto.requestDTOs.UpdateCourseDTO;
+import com.example.UniversityManagementSystem.dto.responseDTOs.CourseCount;
 import com.example.UniversityManagementSystem.dto.responseDTOs.ResponseDTO;
 import com.example.UniversityManagementSystem.entity.Course;
 import com.example.UniversityManagementSystem.service.impl.CourseServiceImpl;
@@ -73,9 +74,9 @@ public class CourseController {
 
     // Custom endpoint to get the count of students enrolled in each course
     @GetMapping("/course-count")
-    public ResponseEntity<Object> getCourseCounts() {
+    public ResponseEntity<List<CourseCount>> getCourseCounts() {
 
-        Object response = courseService.countStudentsByCourse();
+        List<CourseCount> response = courseService.countStudentsByCourse();
 
         return ResponseEntity.ok(response);
     }

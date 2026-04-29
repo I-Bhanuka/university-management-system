@@ -4,6 +4,7 @@ import com.example.UniversityManagementSystem.dto.requestDTOs.CourseEnrollDTO;
 import com.example.UniversityManagementSystem.dto.requestDTOs.CourseIdDTO;
 import com.example.UniversityManagementSystem.dto.requestDTOs.RegisterCourseDTO;
 import com.example.UniversityManagementSystem.dto.requestDTOs.UpdateCourseDTO;
+import com.example.UniversityManagementSystem.dto.responseDTOs.CourseCount;
 import com.example.UniversityManagementSystem.entity.Course;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public interface CourseService {
     void enrollStudentIntoCourse(CourseEnrollDTO request);
 
     // Get all courses with number of students enrolled
-    Object countStudentsByCourse();
+    List<CourseCount> countStudentsByCourse();
 
 }
 
