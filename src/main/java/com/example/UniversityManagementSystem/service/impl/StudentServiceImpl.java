@@ -35,7 +35,10 @@ public class StudentServiceImpl implements StudentService {
     @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT')")
     @Override
     public Student getStudent(StudentIdDTO request) {
-        // Find the Student
+
+        // Find a Student by studentId
+        log.info("==================== Get Student by Student ID =================");
+
         return findStudentByStudentId(request.getStudentId());
     }
 
@@ -43,7 +46,26 @@ public class StudentServiceImpl implements StudentService {
     @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT')")
     @Override
     public List<Student> getAllStudents() {
-        return studentRepository.findAll();
+
+        // Get all students
+        log.info("==================== Get All Students =================");
+
+        List<Student> result = studentRepository.findAll();
+
+        if (result.isEmpty()) {
+            log.warn("No records were found with Students.");
+            throw new StudentNotFoundException("any Id");
+        }
+
+        log.info("Retrieved students successfully. Total number of students found: {}", result.size());
+
+        for (Student student : result) {
+            log.info("Student found with Student Id: {} First Name: {}, Last Name: {}, Email: {}, DOB: {}, Enrollment Date: {}, Status: {}",
+                    student.getStudentId(), student.getFirstName(), student.getLastName(), student.getEmail(),
+                    student.getDob(), student.getEnrollmentDate(), student.getStudentStatus());
+        }
+
+        return result;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -51,14 +73,17 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void registerStudent(RegisterStudentDTO request) {
 
+        log.info("==================== Register Student ==================");
+
         // convert the String DOB into LocalDate
         LocalDate date = LocalDate.parse(request.getDob());
         // Get the Enrollment date
         LocalDate enrollmentDate = LocalDate.now();
 
         // Create the StudentId
+        log.info("Generating student ID for new student...");
         String studentId = generateStudentId();
-        log.info(studentId);
+        log.info("Generated student ID: {}", studentId);
 
         // Create a new Student entity using the builder pattern
         Student student = Student.builder()
@@ -80,6 +105,7 @@ public class StudentServiceImpl implements StudentService {
         log.info("Enrollment Date: {}", student.getEnrollmentDate());
 
         // Save the Student entity to the database
+        log.info("Trying to save student with ID: {} to the database...", student.getStudentId());
         studentRepository.save(student);
 
         // Create a user entity as well, and assign the STUDENT role to the user
@@ -90,19 +116,25 @@ public class StudentServiceImpl implements StudentService {
                 .build();
 
         // Save the user entity to the database
+        log.info("Trying to save user with username: {} to the database...", saveAsUser.getUsername());
         userRepository.save(saveAsUser);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void deactivateStudent(StudentIdDTO request) {
+
+        log.info("==================== Deactivate Student ==================");
+
         // Find the Student
         Student std = findStudentByStudentId(request.getStudentId());
 
         // Update the student status to INACTIVE
+        log.info("Changing the status of student with ID: {} from {} to INACTIVE", std.getStudentId(), std.getStudentStatus());
         std.setStudentStatus(StudentStatus.INACTIVE);
 
         // Save the updated Student entity to the database
+        log.info("Trying to save the De-activated student with ID: {} to the database...", std.getStudentId());
         studentRepository.save(std);
     }
 
@@ -119,14 +151,12 @@ public class StudentServiceImpl implements StudentService {
         // Update the student information
         if (request.getFirstName() != null) {
             if (request.getFirstName().isEmpty()) {
-                log.warn("Empty first name provided for student with ID: {}", request.getStudentId());
-                log.info("Skipping update for first name of student with ID: {}", request.getStudentId());
+                log.warn("Empty first name provided for student with ID: {}.\nSkipping Update...", request.getStudentId());
                 throw new BadRequestException("Update failed: First name cannot be empty.");
             }
 
             if (request.getFirstName().equals(std.getFirstName())) {
-                log.warn("Same first name provided for student with ID: {}", request.getStudentId());
-                log.info("Skipping update for first name of student with ID: {}", request.getStudentId());
+                log.warn("Same first name provided for student with ID: {}.\nSkipping Update... ", request.getStudentId());
                 throw new BadRequestException("Update failed: First name is the same as the current value.");
             }
 
@@ -136,14 +166,12 @@ public class StudentServiceImpl implements StudentService {
 
         if (request.getLastName() != null) {
             if  (request.getLastName().isEmpty()) {
-                log.warn("Empty last name provided for student with ID: {}", request.getStudentId());
-                log.info("Skipping update for last name of student with ID: {}", request.getStudentId());
+                log.warn("Empty last name provided for student with ID: {}.\nSkipping Update...", request.getStudentId());
                 throw new BadRequestException("Update failed: Last name cannot be empty.");
             }
 
             if (request.getLastName().equals(std.getLastName())) {
-                log.warn("Same last name provided for student with ID: {}", request.getStudentId());
-                log.info("Skipping update for last name of student with ID: {}", request.getStudentId());
+                log.warn("Same last name provided for student with ID: {}\nSkipping Update...", request.getStudentId());
                 throw new BadRequestException("Update failed: Last name is the same as the current value.");
             }
 
@@ -158,14 +186,12 @@ public class StudentServiceImpl implements StudentService {
 
         if (request.getEmail() != null) {
             if (request.getEmail().isEmpty()) {
-                log.warn("Empty email provided for student with ID: {}", request.getStudentId());
-                log.info("Skipping update for email of student with ID: {}", request.getStudentId());
+                log.warn("Empty email provided for student with ID: {}.\nSkipping Update...", request.getStudentId());
                 throw new BadRequestException("Update failed: Email cannot be empty.");
             }
 
             if (request.getEmail().equals(std.getEmail())) {
-                log.warn("Same email provided for student with ID: {}", request.getStudentId());
-                log.info("Skipping update for email of student with ID: {}", request.getStudentId());
+                log.warn("Same email provided for student with ID: {}.\nSkipping Update...", request.getStudentId());
                 throw new BadRequestException("Update failed: Email is the same as the current value.");
             }
 
@@ -174,12 +200,12 @@ public class StudentServiceImpl implements StudentService {
         }
 
         if (!updated) {
-            log.warn("No fields provided to update for student with ID: {}", request.getStudentId());
-            log.info("Skipping update for student with ID: {}", request.getStudentId());
+            log.warn("No fields provided to update for student with ID: {}.\nSkipping Update...", request.getStudentId());
             throw new BadRequestException("Update failed: At least one field (firstName, lastName, dob, email) must be provided for update.");
         }
 
         // Save the changes to the database
+        log.info("Trying to save the updated student with ID: {} to the database...", std.getStudentId());
         studentRepository.save(std);
 
         return std;
@@ -249,6 +275,7 @@ public class StudentServiceImpl implements StudentService {
 
         if (std == null) {
             // if there is no student in database, create the first studentId with the format "ST-YYYY0000"
+            log.info("Student table is empty. Generating first student ID for the year {}.", LocalDate.now().getYear());
             studentId = String.format("%s-%d%04d", "ST", LocalDate.now().getYear(), 0);
             return studentId;
 
@@ -266,6 +293,8 @@ public class StudentServiceImpl implements StudentService {
         // Check the year portion of the ID
         if (yearId != LocalDate.now().getYear()) {
             // If the year portion does not match with the current year, update the year
+            log.info("Resetting student ID sequence for new year. Previous year: {}, Current year: {}.", yearId, LocalDate.now().getYear());
+
             yearId = LocalDate.now().getYear();
 
             // Reset the number portion to 0000
@@ -280,6 +309,7 @@ public class StudentServiceImpl implements StudentService {
     // Helper method to find the student by studentId
     public Student findStudentByStudentId(String studentId) {
         // Find the Student
+        log.info("Finding student by student id {} ... ", studentId);
         Student std = studentRepository.findByStudentId(studentId).orElse(null);
 
         // If student is not found, log the error and throw an exception
@@ -288,6 +318,7 @@ public class StudentServiceImpl implements StudentService {
             throw new StudentNotFoundException("Id: " + studentId);
         }
 
+        log.info("Student found with student id {}", studentId);
         return std;
     }
 
