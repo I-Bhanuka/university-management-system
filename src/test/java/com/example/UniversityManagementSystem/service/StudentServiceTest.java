@@ -1,9 +1,9 @@
 package com.example.UniversityManagementSystem.service;
 
-import com.example.UniversityManagementSystem.dto.NameEmailStudentDTO;
-import com.example.UniversityManagementSystem.dto.RegisterStudentDTO;
-import com.example.UniversityManagementSystem.dto.StudentIdDTO;
-import com.example.UniversityManagementSystem.dto.UpdateStudentDTO;
+import com.example.UniversityManagementSystem.dto.requestDTOs.NameEmailStudentDTO;
+import com.example.UniversityManagementSystem.dto.requestDTOs.RegisterStudentDTO;
+import com.example.UniversityManagementSystem.dto.requestDTOs.StudentIdDTO;
+import com.example.UniversityManagementSystem.dto.requestDTOs.UpdateStudentDTO;
 import com.example.UniversityManagementSystem.entity.Student;
 import com.example.UniversityManagementSystem.entity.User;
 import com.example.UniversityManagementSystem.enums.StudentStatus;

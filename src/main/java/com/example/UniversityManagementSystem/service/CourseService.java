@@ -1,11 +1,10 @@
 package com.example.UniversityManagementSystem.service;
 
-import com.example.UniversityManagementSystem.dto.CourseEnrollDTO;
-import com.example.UniversityManagementSystem.dto.CourseIdDTO;
-import com.example.UniversityManagementSystem.dto.RegisterCourseDTO;
-import com.example.UniversityManagementSystem.dto.UpdateCourseDTO;
+import com.example.UniversityManagementSystem.dto.requestDTOs.CourseEnrollDTO;
+import com.example.UniversityManagementSystem.dto.requestDTOs.CourseIdDTO;
+import com.example.UniversityManagementSystem.dto.requestDTOs.RegisterCourseDTO;
+import com.example.UniversityManagementSystem.dto.requestDTOs.UpdateCourseDTO;
 import com.example.UniversityManagementSystem.entity.Course;
-import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 

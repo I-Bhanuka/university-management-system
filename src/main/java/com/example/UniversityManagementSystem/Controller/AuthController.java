@@ -1,10 +1,9 @@
 package com.example.UniversityManagementSystem.Controller;
 
-import com.example.UniversityManagementSystem.dto.JwtResponseDTO;
-import com.example.UniversityManagementSystem.dto.LoginUserRequestDTO;
-import com.example.UniversityManagementSystem.dto.RegisterUserRequestDTO;
-import com.example.UniversityManagementSystem.dto.ResponseDTO;
-import com.example.UniversityManagementSystem.service.AuthService;
+import com.example.UniversityManagementSystem.dto.responseDTOs.JwtResponseDTO;
+import com.example.UniversityManagementSystem.dto.requestDTOs.LoginUserRequestDTO;
+import com.example.UniversityManagementSystem.dto.requestDTOs.RegisterUserRequestDTO;
+import com.example.UniversityManagementSystem.dto.responseDTOs.ResponseDTO;
 import com.example.UniversityManagementSystem.service.impl.AuthServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

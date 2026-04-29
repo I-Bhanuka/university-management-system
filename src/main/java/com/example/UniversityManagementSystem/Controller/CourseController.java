@@ -1,8 +1,11 @@
 package com.example.UniversityManagementSystem.Controller;
 
-import com.example.UniversityManagementSystem.dto.*;
+import com.example.UniversityManagementSystem.dto.requestDTOs.CourseEnrollDTO;
+import com.example.UniversityManagementSystem.dto.requestDTOs.CourseIdDTO;
+import com.example.UniversityManagementSystem.dto.requestDTOs.RegisterCourseDTO;
+import com.example.UniversityManagementSystem.dto.requestDTOs.UpdateCourseDTO;
+import com.example.UniversityManagementSystem.dto.responseDTOs.ResponseDTO;
 import com.example.UniversityManagementSystem.entity.Course;
-import com.example.UniversityManagementSystem.service.CourseService;
 import com.example.UniversityManagementSystem.service.impl.CourseServiceImpl;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;

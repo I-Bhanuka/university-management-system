@@ -1,9 +1,9 @@
 package com.example.UniversityManagementSystem.service.impl;
 
-import com.example.UniversityManagementSystem.dto.CourseEnrollDTO;
-import com.example.UniversityManagementSystem.dto.CourseIdDTO;
-import com.example.UniversityManagementSystem.dto.RegisterCourseDTO;
-import com.example.UniversityManagementSystem.dto.UpdateCourseDTO;
+import com.example.UniversityManagementSystem.dto.requestDTOs.CourseEnrollDTO;
+import com.example.UniversityManagementSystem.dto.requestDTOs.CourseIdDTO;
+import com.example.UniversityManagementSystem.dto.requestDTOs.RegisterCourseDTO;
+import com.example.UniversityManagementSystem.dto.requestDTOs.UpdateCourseDTO;
 import com.example.UniversityManagementSystem.entity.Course;
 import com.example.UniversityManagementSystem.entity.Student;
 import com.example.UniversityManagementSystem.enums.CourseStatus;

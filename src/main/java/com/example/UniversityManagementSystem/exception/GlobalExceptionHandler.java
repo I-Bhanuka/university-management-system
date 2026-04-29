@@ -1,6 +1,6 @@
 package com.example.UniversityManagementSystem.exception;
 
-import com.example.UniversityManagementSystem.dto.ErrorResponseDTO;
+import com.example.UniversityManagementSystem.dto.responseDTOs.ErrorResponseDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;

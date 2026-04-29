@@ -1,9 +1,8 @@
 package com.example.UniversityManagementSystem.security;
 
-import com.example.UniversityManagementSystem.dto.ErrorResponseDTO;
+import com.example.UniversityManagementSystem.dto.responseDTOs.ErrorResponseDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.web.AuthenticationEntryPoint;

@@ -1,6 +1,6 @@
 package com.example.UniversityManagementSystem.security;
 
-import com.example.UniversityManagementSystem.dto.ErrorResponseDTO;
+import com.example.UniversityManagementSystem.dto.responseDTOs.ErrorResponseDTO;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -9,8 +9,6 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 

@@ -1,8 +1,8 @@
 package com.example.UniversityManagementSystem.service;
 
-import com.example.UniversityManagementSystem.dto.JwtResponseDTO;
-import com.example.UniversityManagementSystem.dto.LoginUserRequestDTO;
-import com.example.UniversityManagementSystem.dto.RegisterUserRequestDTO;
+import com.example.UniversityManagementSystem.dto.responseDTOs.JwtResponseDTO;
+import com.example.UniversityManagementSystem.dto.requestDTOs.LoginUserRequestDTO;
+import com.example.UniversityManagementSystem.dto.requestDTOs.RegisterUserRequestDTO;
 
 public interface AuthService {
 
