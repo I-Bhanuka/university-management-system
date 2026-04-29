@@ -1,6 +1,5 @@
 package com.example.UniversityManagementSystem.service.impl;
 
-import com.example.UniversityManagementSystem.dto.requestDTOs.NameEmailStudentDTO;
 import com.example.UniversityManagementSystem.dto.requestDTOs.RegisterStudentDTO;
 import com.example.UniversityManagementSystem.dto.requestDTOs.StudentIdDTO;
 import com.example.UniversityManagementSystem.dto.requestDTOs.UpdateStudentDTO;
