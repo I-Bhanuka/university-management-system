@@ -51,6 +51,8 @@ public class AuthService {
         log.info("User registered: {}", request.getUsername());
     }
 
+
+    // Login the user and return the JWT token
     public JwtResponseDTO login(LoginUserRequestDTO request) {
 
         log.info("=== LOGIN ATTEMPT ===");
@@ -67,10 +69,12 @@ public class AuthService {
 
             log.info("=== AUTHENTICATION SUCCESS ===");
 
+            // Generate JWT token using the authenticated user's details
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             String token = jwtUtil.generateToken(userDetails);
 
             log.info("=== TOKEN GENERATED ===");
+
             return new JwtResponseDTO(token, userDetails.getUsername(), userDetails.getAuthorities().toString());
 
         } catch (Exception e) {
