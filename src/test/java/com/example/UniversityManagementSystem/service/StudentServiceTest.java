@@ -580,6 +580,19 @@ class StudentServiceTest {
     @Test
     @DisplayName("Should throw StudentNotFoundException when student does not exist with given student ID")
     void shouldThrowStudentNotFoundExceptionIfNotFound() {
+        // ARRANGE
+        // 1. Create the DTO with non-existing student ID
+        StudentIdDTO request = StudentIdDTO.builder()
+                .studentId("NON-EXISTING-ID")
+                .build();
+
+        // 2. stub: when the repo looks for this student, return empty - Optional.empty()
+        when(studentRepository.findByStudentId(request.getStudentId()))
+                .thenReturn(Optional.empty());
+
+        // ACT and ASSERT
+        assertThrows(StudentNotFoundException.class,
+                () -> studentService.findStudentByStudentId(request.getStudentId()));
 
     }
 
