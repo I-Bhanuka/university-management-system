@@ -2,26 +2,25 @@ package com.example.UniversityManagementSystem.Controller;
 
 import com.example.UniversityManagementSystem.dto.*;
 import com.example.UniversityManagementSystem.entity.Student;
-import com.example.UniversityManagementSystem.service.StudentService;
+import com.example.UniversityManagementSystem.service.impl.StudentServiceImpl;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController // Marks that this class handles http requests and automatically make the return object json
+@RestController // Marks that this class handles http requests and automatically make the return object JSON
 @RequestMapping("/api/students")
 @SecurityRequirement(name = "bearerAuth")
 @Slf4j
 public class StudentController {
 
-    private final StudentService studentService;
+    private final StudentServiceImpl studentService;
 
     // Dependency injection - Constructor injection
-    public StudentController(StudentService studentService) {
+    public StudentController(StudentServiceImpl studentService) {
         this.studentService = studentService;
     }
 
@@ -66,6 +65,7 @@ public class StudentController {
             @RequestParam(required = false) String firstName,
             @RequestParam(required = false) String email) {
 
+        // Check
         NameEmailStudentDTO request = NameEmailStudentDTO.builder()
                 .firstName(firstName)
                 .email(email)

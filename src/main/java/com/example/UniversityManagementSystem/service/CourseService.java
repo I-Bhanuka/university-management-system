@@ -13,6 +13,7 @@ import com.example.UniversityManagementSystem.exception.BadRequestException;
 import com.example.UniversityManagementSystem.exception.CourseNotFoundException;
 import com.example.UniversityManagementSystem.repository.CourseRepository;
 import com.example.UniversityManagementSystem.repository.StudentRepository;
+import com.example.UniversityManagementSystem.service.impl.StudentServiceImpl;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,10 +26,10 @@ import java.util.List;
 public class CourseService {
 
     private final CourseRepository courseRepository;
-    private final StudentService studentService;
+    private final StudentServiceImpl studentService;
     private final StudentRepository studentRepository;
 
-    public CourseService(CourseRepository courseRepository, StudentService studentService, StudentRepository studentRepository) {
+    public CourseService(CourseRepository courseRepository, StudentServiceImpl studentService, StudentRepository studentRepository) {
 
         this.courseRepository = courseRepository;
         this.studentService = studentService;
