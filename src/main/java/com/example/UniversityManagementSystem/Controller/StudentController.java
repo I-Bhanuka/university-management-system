@@ -9,7 +9,7 @@ import com.example.UniversityManagementSystem.entity.Student;
 import com.example.UniversityManagementSystem.service.impl.StudentServiceImpl;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,15 +18,10 @@ import java.util.List;
 @RestController // Marks that this class handles http requests and automatically make the return object JSON
 @RequestMapping("/api/students")
 @SecurityRequirement(name = "bearerAuth")
-@Slf4j
+@RequiredArgsConstructor // Will generate a constructor for fields with final keyword, which will be used for dependency injection of StudentServiceImpl
 public class StudentController {
 
-    private final StudentServiceImpl studentService;
-
-    // Dependency injection - Constructor injection
-    public StudentController(StudentServiceImpl studentService) {
-        this.studentService = studentService;
-    }
+    private final StudentServiceImpl studentService; // Dependency injection will be done by RequiredArgsConstructor
 
     @GetMapping
     public List<Student> getAllStudents() {
@@ -55,7 +50,6 @@ public class StudentController {
     @PatchMapping("/update")
     public ResponseEntity<Student> updateStudent(@Valid @RequestBody UpdateStudentDTO request) {
 
-        log.info(request.getStudentId());
 
         Student updatedStudent = studentService.updateStudent(request);
 

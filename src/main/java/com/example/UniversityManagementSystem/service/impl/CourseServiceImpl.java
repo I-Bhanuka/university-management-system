@@ -15,6 +15,7 @@ import com.example.UniversityManagementSystem.repository.CourseRepository;
 import com.example.UniversityManagementSystem.repository.StudentRepository;
 import com.example.UniversityManagementSystem.service.CourseService;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -23,18 +24,12 @@ import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository courseRepository;
     private final StudentServiceImpl studentService;
     private final StudentRepository studentRepository;
-
-    public CourseServiceImpl (CourseRepository courseRepository, StudentServiceImpl studentService, StudentRepository studentRepository) {
-
-        this.courseRepository = courseRepository;
-        this.studentService = studentService;
-        this.studentRepository = studentRepository;
-    }
 
     // Create course method
     @PreAuthorize("hasRole('ADMIN')") // Only users with the LECTURER role can create courses

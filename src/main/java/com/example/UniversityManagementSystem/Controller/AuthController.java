@@ -6,6 +6,7 @@ import com.example.UniversityManagementSystem.dto.requestDTOs.RegisterUserReques
 import com.example.UniversityManagementSystem.dto.responseDTOs.ResponseDTO;
 import com.example.UniversityManagementSystem.service.impl.AuthServiceImpl;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,13 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthServiceImpl authService;
-
-    public AuthController(AuthServiceImpl authService) {
-        this.authService = authService;
-    }
+    private final AuthServiceImpl authService; // Dependency injection will be done by RequiredArgsConstructor
 
     @PostMapping("/register")
     public ResponseEntity<ResponseDTO> register(@Valid @RequestBody RegisterUserRequestDTO request) {

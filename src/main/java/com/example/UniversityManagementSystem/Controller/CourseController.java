@@ -9,6 +9,7 @@ import com.example.UniversityManagementSystem.entity.Course;
 import com.example.UniversityManagementSystem.service.impl.CourseServiceImpl;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +20,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/courses")
 @SecurityRequirement(name = "bearerAuth")
+@RequiredArgsConstructor
 public class CourseController {
 
-    private final CourseServiceImpl courseService;
-
-    public CourseController(CourseServiceImpl courseService) {
-        this.courseService = courseService;
-    }
+    private final CourseServiceImpl courseService; // Dependency injection will be done by RequiredArgsConstructor
 
     // Create a course endpoint
     @PostMapping

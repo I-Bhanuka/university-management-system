@@ -14,6 +14,7 @@ import com.example.UniversityManagementSystem.repository.StudentRepository;
 import com.example.UniversityManagementSystem.repository.UserRepository;
 import com.example.UniversityManagementSystem.service.StudentService;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -23,16 +24,11 @@ import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
     private final UserRepository userRepository;
-
-    public StudentServiceImpl (StudentRepository studentRepository,
-                          UserRepository userRepository) {
-        this.studentRepository = studentRepository;
-        this.userRepository = userRepository;
-    }
 
     // Anyone authenticated can view a students
     @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT')")
