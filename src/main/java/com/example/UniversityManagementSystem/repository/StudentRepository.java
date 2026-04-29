@@ -1,9 +1,13 @@
 package com.example.UniversityManagementSystem.repository;
 
 import com.example.UniversityManagementSystem.entity.Student;
+import org.aspectj.lang.annotation.RequiredTypes;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -32,5 +36,15 @@ public interface StudentRepository extends JpaRepository<Student, UUID> {
 
     Optional<Student> findByEmail(String email);
 
-    Optional<Student> findByFirstNameAndEmail(String studentId, String email);
+
+    @Query("""
+            SELECT s
+            FROM Student s
+            WHERE s.firstName = :firstName OR s.email = :email
+            """)
+    List<Student> findStudentByFirstNameAndEmail(
+            @Param("firstName") String firstName,
+            @Param("email") String email
+            );
+
 }
