@@ -1,5 +1,6 @@
 package com.example.UniversityManagementSystem.repository;
 
+import com.example.UniversityManagementSystem.dto.responseDTOs.CourseCount;
 import com.example.UniversityManagementSystem.entity.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,10 +17,10 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
 
     // Count students by the course they are enrolled in
     @Query("""
-        SELECT c.courseName, COUNT(s)
+        SELECT new com.example.UniversityManagementSystem.dto.responseDTOs.CourseCount(c.courseName, COUNT(s) as studentCount)
         FROM Course c
         JOIN Student s ON s.course.id = c.id
         GROUP BY c.courseName
     """)
-    List<Object[]> countStudentsByCourse();
+    List<CourseCount> countStudentsByCourse();
 }
