@@ -4,6 +4,7 @@ import com.example.UniversityManagementSystem.dto.requestDTOs.NameEmailStudentDT
 import com.example.UniversityManagementSystem.dto.requestDTOs.RegisterStudentDTO;
 import com.example.UniversityManagementSystem.dto.requestDTOs.StudentIdDTO;
 import com.example.UniversityManagementSystem.dto.requestDTOs.UpdateStudentDTO;
+import com.example.UniversityManagementSystem.dto.responseDTOs.StudentResponseDTO;
 import com.example.UniversityManagementSystem.entity.Student;
 import com.example.UniversityManagementSystem.entity.User;
 import com.example.UniversityManagementSystem.enums.Role;
@@ -20,6 +21,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -187,23 +189,57 @@ public class StudentServiceImpl implements StudentService {
     // Anyone authenticated can search
     @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT')")
     @Override
-    public Student searchStudent(NameEmailStudentDTO request) {
-        Student std = null;
+    public ArrayList<StudentResponseDTO> searchStudent(NameEmailStudentDTO request) {
+//        Student std = null;
+//
+//        if (request.getFirstName() != null && request.getEmail() != null){
+//            std = studentRepository.findByFirstNameAndEmail(request.getFirstName(), request.getEmail()).orElse(null);
+//        } else if (request.getEmail() != null) {
+//            std = studentRepository.findByEmail(request.getEmail()).orElse(null);
+//        } else if (request.getFirstName() != null)  {
+//            std = studentRepository.findTopByFirstName(request.getFirstName()).orElse(null);
+//        }
+//
+//        if (std == null) {
+//            log.info("Student with name {} or email {} not found", request.getFirstName(), request.getEmail());
+//            throw new StudentNotFoundException(request.getFirstName());
+//        } else  {
+//            return std;
+//        }
 
-        if (request.getFirstName() != null && request.getEmail() != null){
-            std = studentRepository.findByFirstNameAndEmail(request.getFirstName(), request.getEmail()).orElse(null);
-        } else if (request.getEmail() != null) {
-            std = studentRepository.findByEmail(request.getEmail()).orElse(null);
-        } else if (request.getFirstName() != null)  {
-            std = studentRepository.findTopByFirstName(request.getFirstName()).orElse(null);
+        String firstName = request.getFirstName();
+        String email = request.getEmail();
+
+        List<Student> result = studentRepository.findStudentByFirstNameAndEmail(firstName, email);
+
+        if (result.isEmpty()) {
+            log.info("No records were found with Students with name {} or email {}.", request.getFirstName(), request.getEmail());
+            throw new StudentNotFoundException("Name: " + request.getFirstName() + " or Email " + request.getEmail());
         }
 
-        if (std == null) {
-            log.info("Student with name {} or email {} not found", request.getFirstName(), request.getEmail());
-            throw new StudentNotFoundException(request.getFirstName());
-        } else  {
-            return std;
+        log.info("================== Search Results =================");
+        log.info("Search criteria - First Name: {}, Email: {}", request.getFirstName(), request.getEmail());
+
+        // Convert the search results into List of StudentResponseDTO for better logging and response formatting
+        ArrayList<StudentResponseDTO> responseDTO = new ArrayList<>();
+        for (Student student : result) {
+            log.info("Student found with Student Id: {} First Name: {}, Last Name: {}, Email: {}, DOB: {}, Enrollment Date: {}, Status: {}",
+                    student.getStudentId(), student.getFirstName(), student.getLastName(), student.getEmail(),
+                    student.getDob(), student.getEnrollmentDate(), student.getStudentStatus());
+
+            responseDTO.add(StudentResponseDTO.builder()
+                            .firstName(student.getFirstName())
+                            .lastName(student.getLastName())
+                            .email(student.getEmail())
+                            .dob(student.getDob())
+                            .enrollmentDate(student.getEnrollmentDate())
+                            .studentStatus(student.getStudentStatus())
+                            .course(student.getCourse())
+                            .build());
+
         }
+
+        return responseDTO;
     }
 
 
@@ -253,7 +289,7 @@ public class StudentServiceImpl implements StudentService {
         // If student is not found, log the error and throw an exception
         if (std == null){
             log.info("Student with studentId {} not found", studentId);
-            throw new StudentNotFoundException(studentId);
+            throw new StudentNotFoundException("Id: " + studentId);
         }
 
         return std;
