@@ -11,6 +11,7 @@ import com.example.UniversityManagementSystem.exception.BadRequestException;
 import com.example.UniversityManagementSystem.exception.StudentNotFoundException;
 import com.example.UniversityManagementSystem.repository.StudentRepository;
 import com.example.UniversityManagementSystem.repository.UserRepository;
+import com.example.UniversityManagementSystem.service.impl.StudentServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -41,7 +42,7 @@ class StudentServiceTest {
 
     // CLASS UNDER TEST - The class we want to test
     @InjectMocks
-    private StudentService studentService;
+    private StudentServiceImpl studentService;
 
     // SHARED TEST DATA - Data that can be used across multiple tests
     private Student activeStudent;
