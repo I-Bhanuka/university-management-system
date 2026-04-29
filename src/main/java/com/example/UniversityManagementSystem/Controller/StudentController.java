@@ -5,6 +5,7 @@ import com.example.UniversityManagementSystem.dto.requestDTOs.RegisterStudentDTO
 import com.example.UniversityManagementSystem.dto.requestDTOs.StudentIdDTO;
 import com.example.UniversityManagementSystem.dto.requestDTOs.UpdateStudentDTO;
 import com.example.UniversityManagementSystem.dto.responseDTOs.ResponseDTO;
+import com.example.UniversityManagementSystem.dto.responseDTOs.StudentResponseDTO;
 import com.example.UniversityManagementSystem.entity.Student;
 import com.example.UniversityManagementSystem.service.impl.StudentServiceImpl;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController // Marks that this class handles http requests and automatically make the return object JSON
@@ -59,17 +61,11 @@ public class StudentController {
 
     // Custom search endpoint to search for a student by name or email
     @GetMapping("/search")
-    public Student searchStudent(
+    public ArrayList<StudentResponseDTO> searchStudent(
             @RequestParam(required = false) String firstName,
             @RequestParam(required = false) String email) {
 
-        // Check
-        NameEmailStudentDTO request = NameEmailStudentDTO.builder()
-                .firstName(firstName)
-                .email(email)
-                .build();
-
-        return studentService.searchStudent(request);
+        return studentService.searchStudent(firstName, email);
     }
 
 
