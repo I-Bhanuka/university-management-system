@@ -1,4 +1,4 @@
-package com.example.UniversityManagementSystem.service;
+package com.example.UniversityManagementSystem.service.impl;
 
 import com.example.UniversityManagementSystem.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;

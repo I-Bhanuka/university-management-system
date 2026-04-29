@@ -1,6 +1,6 @@
 package com.example.UniversityManagementSystem.security;
 
-import com.example.UniversityManagementSystem.service.UserDetailsServiceImpl;
+import com.example.UniversityManagementSystem.service.impl.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -3,7 +3,7 @@ package com.example.UniversityManagementSystem.config;
 import com.example.UniversityManagementSystem.security.CustomAccessDeniedHandler;
 import com.example.UniversityManagementSystem.security.CustomAuthenticationEntryPoint;
 import com.example.UniversityManagementSystem.security.JwtFilter;
-import com.example.UniversityManagementSystem.service.UserDetailsServiceImpl;
+import com.example.UniversityManagementSystem.service.impl.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
