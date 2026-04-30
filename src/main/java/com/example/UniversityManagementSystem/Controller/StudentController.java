@@ -10,9 +10,11 @@ import com.example.UniversityManagementSystem.service.impl.StudentServiceImpl;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.data.domain.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +27,10 @@ public class StudentController {
     private final StudentServiceImpl studentService; // Dependency injection will be done by RequiredArgsConstructor
 
     @GetMapping
-    public List<Student> getAllStudents() {
-        return studentService.getAllStudents();
+    public Page<Student> getAllStudents(Pageable pageable) {
+        // If the user passes the Pagination parameters, then it will be automatically converted to Pageable object by Spring
+        // And if the user does not pass the Pagination parameters, then it will be null and we can handle it in the service layer
+        return studentService.getAllStudents(pageable);
     }
 
     @PostMapping("/getStudent")

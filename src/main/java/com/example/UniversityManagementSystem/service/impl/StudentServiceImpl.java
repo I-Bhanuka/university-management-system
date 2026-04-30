@@ -16,9 +16,11 @@ import com.example.UniversityManagementSystem.service.StudentService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Pageable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,19 +47,19 @@ public class StudentServiceImpl implements StudentService {
     // Anyone authenticated can view all students
     @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT')")
     @Override
-    public List<Student> getAllStudents() {
+    public Page<Student> getAllStudents(Pageable pageable) {
 
         // Get all students
         log.info("==================== Get All Students =================");
 
-        List<Student> result = studentRepository.findAll();
+        Page<Student> result = studentRepository.findAll(pageable);
 
         if (result.isEmpty()) {
             log.warn("No records were found with Students.");
             throw new StudentNotFoundException("any Id");
         }
 
-        log.info("Retrieved students successfully. Total number of students found: {}", result.size());
+        log.info("Retrieved students successfully. Total number of students found: {}", result.getTotalElements());
 
         for (Student student : result) {
             log.info("Student found with Student Id: {} First Name: {}, Last Name: {}, Email: {}, DOB: {}, Enrollment Date: {}, Status: {}",
