@@ -17,6 +17,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +48,62 @@ public class StudentServiceImpl implements StudentService {
     // Anyone authenticated can view all students
     @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT')")
     @Override
-    public Page<Student> getAllStudents(Pageable pageable) {
+    public List<Student> getAllStudents() {
+
+        // Get all students
+        log.info("==================== Get All Students without Pagination =================");
+
+        List<Student> result = studentRepository.findAll();
+
+        if (result.isEmpty()) {
+            log.warn("No records were found with Students.");
+            throw new StudentNotFoundException("any Id");
+        }
+
+        log.info("Retrieved students successfully. Total number of students found: {}", result.size());
+
+        for (Student student : result) {
+            log.info("Student found with Student Id: {} First Name: {}, Last Name: {}, Email: {}, DOB: {}, Enrollment Date: {}, Status: {}",
+                    student.getStudentId(), student.getFirstName(), student.getLastName(), student.getEmail(),
+                    student.getDob(), student.getEnrollmentDate(), student.getStudentStatus());
+        }
+
+        return result;
+    }
+
+
+    // Anyone authenticated can view all students
+    @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT')")
+    @Override
+    public List<Student> getAllStudentsSorted(Sort sort) {
+
+        // Get all students
+        log.info("==================== Get All Students Sorted =================");
+
+        List<Student> result = studentRepository.findAll(sort);
+
+        if (result.isEmpty()) {
+            log.warn("No records were found with Students.");
+            throw new StudentNotFoundException("any Id");
+        }
+
+        log.info("Retrieved students successfully. Total number of students found: {}", result.size());
+
+        for (Student student : result) {
+            log.info("Student found with Student Id: {} First Name: {}, Last Name: {}, Email: {}, DOB: {}, Enrollment Date: {}, Status: {}",
+                    student.getStudentId(), student.getFirstName(), student.getLastName(), student.getEmail(),
+                    student.getDob(), student.getEnrollmentDate(), student.getStudentStatus());
+        }
+
+        return result;
+    }
+
+
+
+    // Anyone authenticated can view all students
+    @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT')")
+    @Override
+    public Page<Student> getAllStudentsPaginatedAndSorted(Pageable pageable) {
 
         // Get all students
         log.info("==================== Get All Students =================");
