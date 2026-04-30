@@ -35,6 +35,13 @@
 			<artifactId>spring-boot-h2console</artifactId>
 		</dependency>
 
+		<!-- H2 Database (for in-memory testing) -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 		<!-- Spring Data JPA (for ORM) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
