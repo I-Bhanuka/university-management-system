@@ -12,6 +12,7 @@ import com.example.UniversityManagementSystem.enums.StudentStatus;
 import com.example.UniversityManagementSystem.exception.AlreadyEnrolledException;
 import com.example.UniversityManagementSystem.exception.BadRequestException;
 import com.example.UniversityManagementSystem.exception.CourseNotFoundException;
+import com.example.UniversityManagementSystem.exception.NotFoundException;
 import com.example.UniversityManagementSystem.repository.CourseRepository;
 import com.example.UniversityManagementSystem.repository.StudentRepository;
 import com.example.UniversityManagementSystem.service.CourseService;
@@ -37,6 +38,8 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public void createCourse(RegisterCourseDTO request) {
 
+        log.info("====== Starting course creation process ======");
+
         // Create a new course entity from the request data
         Course course = Course.builder()
                 .courseId(request.getCourseId())
@@ -53,6 +56,7 @@ public class CourseServiceImpl implements CourseService {
         log.info("Course Status: {}", request.getCourseStatus());
 
         // Create the course in the database
+        log.info("Trying to save course with ID: {}", request.getCourseId());
         courseRepository.save(course);
     }
 
@@ -61,7 +65,23 @@ public class CourseServiceImpl implements CourseService {
     @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT')")
     @Override
     public List<Course> getAllCourses() {
-        return courseRepository.findAll();
+
+        log.info("==================== Get All Courses =================");
+
+        List<Course> result = courseRepository.findAll();
+
+        if (result.isEmpty()) {
+            log.info("No courses found in the database");
+            throw new NotFoundException("No courses found in the database");
+        }
+
+        log.info("Total courses found: {}", result.size());
+        for (Course course : result) {
+            log.info("Course ID: {}, Course Name: {}, Status: {}, Enrolled Students: {}",
+                    course.getCourseId(), course.getCourseName(), course.getCourseStatus(), course.getEnrolledStudentsCount());
+        }
+
+        return result;
     }
 
 
@@ -70,6 +90,9 @@ public class CourseServiceImpl implements CourseService {
     @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT')")
     @Override
     public Course getCourseById(CourseIdDTO request) {
+
+        log.info("==================== Get Course By Course Id =================");
+
         Course crs = getCourseByCourseId(request.getCourseId());
 
         log.info("Course with ID {} found: {}", request.getCourseId(), crs);
@@ -82,8 +105,11 @@ public class CourseServiceImpl implements CourseService {
     @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void deactivateCourseById(CourseIdDTO request) {
+
+        log.info("==================== Deactivate Course =================");
+
         // Get the course by courseID
-        Course crs = courseRepository.findByCourseId(request.getCourseId()).orElse(null);
+        Course crs = getCourseByCourseId(request.getCourseId());
 
         // Check whether the course is null
         if (crs == null) {
@@ -92,9 +118,11 @@ public class CourseServiceImpl implements CourseService {
         }
 
         // Set the status to COMPLETED
+        log.info("Course with courseId {} found to de-activate", request.getCourseId());
         crs.setCourseStatus(CourseStatus.COMPLETED);
 
         // Save the course
+        log.info("Trying to save course with ID: {} after de-activation", request.getCourseId());
         courseRepository.save(crs);
 
 
@@ -104,6 +132,8 @@ public class CourseServiceImpl implements CourseService {
     @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void updateCourseDetails(UpdateCourseDTO request) {
+
+        log.info("==================== Update Course Details =================");
         // Get the course by courseId
         Course crs = getCourseByCourseId(request.getCourseId());
 
@@ -140,6 +170,9 @@ public class CourseServiceImpl implements CourseService {
     @Transactional
     @Override
     public void enrollStudentIntoCourse(CourseEnrollDTO request) {
+
+        log.info("==================== Enroll Student Into Course =================");
+
         // Validate the courseId
         Course crs = getCourseByCourseId(request.getCourseId());
 
@@ -163,11 +196,13 @@ public class CourseServiceImpl implements CourseService {
 
 
         // Then add the courseId to the student entity and save the student entity to the database
+        log.info("Enrolling student into course with ID: {}", request.getStudentId());
         std.setCourse(crs);
         studentRepository.save(std);
 
         // Increase the number of participants in the course table
         crs.setEnrolledStudentsCount(crs.getEnrolledStudentsCount() + 1);
+        log.info("Student enrolled into course with ID: {}", request.getStudentId());
         courseRepository.save(crs);
 
     }
@@ -183,7 +218,9 @@ public class CourseServiceImpl implements CourseService {
 
     // Helper method to find the course by courseId
     public Course getCourseByCourseId(String courseId) {
+
         // Find the Course
+        log.info("Get course by course ID: {}", courseId);
         Course crs = courseRepository.findByCourseId(courseId).orElse(null);
 
         // If course is not found, log the error and throw an exception
