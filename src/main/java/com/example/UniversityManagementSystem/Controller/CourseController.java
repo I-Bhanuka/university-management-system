@@ -12,6 +12,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,8 +40,8 @@ public class CourseController {
 
     // Read all courses
     @PostMapping("/all")
-    public List<Course> getAllCourses() {
-        return courseService.getAllCourses();
+    public Page<Course> getAllCourses(Pageable pageable) {
+        return courseService.getAllCourses(pageable);
     }
 
     // Read a course by ID

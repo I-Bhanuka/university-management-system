@@ -6,6 +6,8 @@ import com.example.UniversityManagementSystem.dto.requestDTOs.RegisterCourseDTO;
 import com.example.UniversityManagementSystem.dto.requestDTOs.UpdateCourseDTO;
 import com.example.UniversityManagementSystem.dto.responseDTOs.CourseCount;
 import com.example.UniversityManagementSystem.entity.Course;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -16,7 +18,7 @@ public interface CourseService {
     void createCourse(RegisterCourseDTO request);
 
     // Read all courses method
-    List<Course> getAllCourses();
+    Page<Course> getAllCourses(Pageable pageable);
 
     // Read a course by ID method
     Course getCourseById(CourseIdDTO request);

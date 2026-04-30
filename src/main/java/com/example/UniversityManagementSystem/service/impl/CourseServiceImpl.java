@@ -19,6 +19,8 @@ import com.example.UniversityManagementSystem.service.CourseService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -64,18 +66,18 @@ public class CourseServiceImpl implements CourseService {
     // Anyone authenticated can view courses
     @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT')")
     @Override
-    public List<Course> getAllCourses() {
+    public Page<Course> getAllCourses(Pageable pageable) {
 
         log.info("==================== Get All Courses =================");
 
-        List<Course> result = courseRepository.findAll();
+        Page<Course> result = courseRepository.findAll(pageable);
 
         if (result.isEmpty()) {
             log.info("No courses found in the database");
             throw new NotFoundException("No courses found in the database");
         }
 
-        log.info("Total courses found: {}", result.size());
+        log.info("Total courses found: {}", result.getTotalElements());
         for (Course course : result) {
             log.info("Course ID: {}, Course Name: {}, Status: {}, Enrolled Students: {}",
                     course.getCourseId(), course.getCourseName(), course.getCourseStatus(), course.getEnrolledStudentsCount());
