@@ -12,7 +12,7 @@ public class UniversityManagementSystemApplication {
 	public static void main(String[] args) {
 
 		SpringApplication.run(UniversityManagementSystemApplication.class, args);
-		log.info("UniversityManagementSystemApplication Server started");
+		log.info("EduStream Server started");
 		log.info("Server is running at http://localhost:8080");
 
 	}
